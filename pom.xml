@@ -92,13 +92,10 @@
                     </execution>
 
                     <execution>
-                        <id>npm run build</id>
+                        <id>webpack build</id>
                         <goals>
-                            <goal>npm</goal>
+                            <goal>webpack</goal>
                         </goals>
-                        <configuration>
-                            <arguments>run build</arguments>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
