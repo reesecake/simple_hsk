@@ -1,0 +1,31 @@
+table {
+    border-collapse: collapse;
+}
+
+td, th {
+    border: 1px solid #999;
+    padding: 0.5rem;
+    text-align: left;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+
+    background-image: url('../assets/traditional_chinese_cloud_pattern_background.jpg');
+    /*background-color: #cd071e;*/
+    background-attachment: fixed;
+    background-position: center top;
+    background-size: cover;
+}
+
+.Site-content {
+    flex: 1 0 auto;
+
+    align-self: center;
+    background-color: white;
+    /*background-size: cover;*/
+    margin: 10px;
+    padding: 10px 100px 50px;
+}
