@@ -20,6 +20,17 @@ body {
     background-size: cover;
 }
 
+.Site-footer {
+    flex-shrink: 0;
+
+    padding: 10px;
+}
+
+.footer-title {
+    color: white;
+    text-align: center;
+}
+
 .Site-content {
     flex: 1 0 auto;
 

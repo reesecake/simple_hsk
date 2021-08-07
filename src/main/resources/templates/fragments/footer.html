@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 <head lang="en">
-    <meta charset="UTF-8"/>
-    <title>ReactJS + Spring Data REST</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>fragments/footer.html</title>
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="css/main.css" />
 </head>
+
 <body>
 
-<div th:replace="fragments/header :: header"></div>
-
-<div class="Site-content container">
-    <div id="react"></div>
-</div>
-
-<div th:replace="fragments/footer.html :: footer"></div>
-
-<script src="built/bundle.js"></script>
+<footer class="Site-footer bg-light" th:fragment="footer">
+    <h3 class="footer-title">HSK</h3>
+</footer>
 
 </body>
 </html>
