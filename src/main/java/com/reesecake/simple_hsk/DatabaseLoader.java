@@ -1,5 +1,7 @@
 package com.reesecake.simple_hsk;
 
+import com.reesecake.simple_hsk.vocab.Vocab;
+import com.reesecake.simple_hsk.vocab.VocabRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +14,12 @@ public class DatabaseLoader implements CommandLineRunner {
     private static final Logger log = LoggerFactory.getLogger(DatabaseLoader.class);
 
     private final EmployeeRepository employeeRepository;
+    private final VocabRepository vocabRepository;
 
     @Autowired
-    public DatabaseLoader(EmployeeRepository repository) {
-        this.employeeRepository = repository;
+    public DatabaseLoader(EmployeeRepository employeeRepository, VocabRepository vocabRepository) {
+        this.employeeRepository = employeeRepository;
+        this.vocabRepository = vocabRepository;
     }
 
     @Override
@@ -25,5 +29,8 @@ public class DatabaseLoader implements CommandLineRunner {
         this.employeeRepository.save(new Employee("Giorno", "Giovanna", "The Gold Experience"));
         this.employeeRepository.save(new Employee("定助", "東方", "Soft & Wet"));
         this.employeeRepository.findAll().forEach(employee -> log.info("Preloaded " + employee));
+
+        this.vocabRepository.save(new Vocab("塑料袋", "sù liào dài", "plastic bag", "HSK4"));
+        this.vocabRepository.findAll().forEach(vocab -> log.info("Preloaded " + vocab));
     }
 }
