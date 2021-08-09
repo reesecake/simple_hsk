@@ -30,6 +30,8 @@ public class DatabaseLoader implements CommandLineRunner {
         this.employeeRepository.save(new Employee("定助", "東方", "Soft & Wet"));
         this.employeeRepository.findAll().forEach(employee -> log.info("Preloaded " + employee));
 
+        this.vocabRepository.save(new Vocab("宾馆", "bīn guǎn", "hotel", "HSK2"));
+        this.vocabRepository.save(new Vocab("打篮球", "dǎ lán qiú", "play basketball", "HSK2"));
         this.vocabRepository.save(new Vocab("塑料袋", "sù liào dài", "plastic bag", "HSK4"));
         this.vocabRepository.findAll().forEach(vocab -> log.info("Preloaded " + vocab));
     }
