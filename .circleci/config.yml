@@ -12,9 +12,6 @@ jobs:
     docker:
       - image: cimg/openjdk:11.0
 
-    environment:
-      TEST_REPORTS: /tmp/test-reports
-
     steps:
       # Checkout the code as the first step.
       - checkout
@@ -27,8 +24,17 @@ jobs:
           name: Test
           command: mvn test
 
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/test-results/junit/
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/junit/ \;
+          when: always
+
       - store_test_results:
-          path: /tmp/test_results
+          path: ~/test_results
+      - store_artifacts:
+          path: ~/test-results/junit
 
 workflows:
   # Below is the definition of your workflow.
