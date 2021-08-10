@@ -12,6 +12,9 @@ jobs:
     docker:
       - image: cimg/openjdk:11.0
 
+    environment:
+      TEST_REPORTS: ~/test-results
+
     steps:
       # Checkout the code as the first step.
       - checkout
