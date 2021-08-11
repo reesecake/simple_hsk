@@ -1,3 +1,7 @@
+a {
+    color: inherit; /* Change hyperlink color  */
+}
+
 table {
     border-collapse: collapse;
 }
@@ -27,7 +31,7 @@ body {
 }
 
 .footer-title {
-    color: white;
+    color: black;
     text-align: center;
 }
 
