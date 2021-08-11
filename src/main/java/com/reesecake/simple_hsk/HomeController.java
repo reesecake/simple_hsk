@@ -19,11 +19,9 @@ public class HomeController {
         return "about";
     }
 
-    @RequestMapping(value = "/hsk/{level_id}", method = RequestMethod.GET)
-    @ResponseBody
-    public String hsk(
-        @PathVariable("level_id") long level_id) {
-            return "hsk" + level_id;
+    @RequestMapping(value = "/hsk/{level_id}")
+    public String hsk(@PathVariable("level_id") long level_id) {
+        return "hsk/hsk" + level_id;
     }
 
 }
