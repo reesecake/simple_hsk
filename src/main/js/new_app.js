@@ -18,7 +18,7 @@ function HSK(props) {
             .then(res => res.json())
             .then(
                 (result) => {
-                    console.log(result);
+                    // console.log(result);
                     setIsLoaded(true);
                     setItems(result._embedded.vocabs);
                 },
@@ -34,11 +34,41 @@ function HSK(props) {
     } else if (!isLoaded) {
         return <div>Loading...</div>;
     } else {
+        // console.log(items);
         return (
-            <div>items: {items._embedded.vocabs}</div>
-            // <EmployeeList employees={items}/>
+            // <div>items: {items.vocabs}</div>
+            <VocabList vocabs={items}/>
         );
     }
+}
+
+function VocabList(props) {
+    const vocabs = props.vocabs.map(vocab =>
+        <Vocab key={vocab._links.self.href} vocab={vocab}/>
+    );
+
+    return (
+        <table>
+            <tbody>
+            <tr>
+                <th>Word</th>
+                <th>pinyin</th>
+                <th>Meaning</th>
+            </tr>
+            {vocabs}
+            </tbody>
+        </table>
+    )
+}
+
+function Vocab(props) {
+    return (
+        <tr>
+            <td>{props.vocab.word}</td>
+            <td>{props.vocab.pinyin}</td>
+            <td>{props.vocab.meaning}</td>
+        </tr>
+    )
 }
 
 // https://stackoverflow.com/questions/21591512/pass-props-from-template-into-react-js-root-node
