@@ -19,6 +19,11 @@ public class HomeController {
         return "about";
     }
 
+    @RequestMapping(value = "/vocab-lists")
+    public String vocabLists() {
+        return "hsk/vocab-lists";
+    }
+
     @RequestMapping(value = "/hsk/{level_id}")
     public String hsk(@PathVariable("level_id") long level_id) {
         return "hsk/hsk" + level_id;
