@@ -44,3 +44,12 @@ body {
     margin: 10px;
     padding: 10px 100px 50px;
 }
+
+.vocab-lists-buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.vocab-lists-buttons a {
+    margin: 5px;
+}
