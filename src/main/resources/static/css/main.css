@@ -1,7 +1,3 @@
-a {
-    color: inherit; /* Change hyperlink color  */
-}
-
 table {
     border-collapse: collapse;
 }
@@ -17,7 +13,7 @@ body {
     flex-direction: column;
     height: 100vh;
 
-    background-image: url('../assets/traditional_chinese_cloud_pattern_background.jpg');
+    background-image: url('../assets/chinese-new-year-background.jpg');
     /*background-color: #cd071e;*/
     background-attachment: fixed;
     background-position: center top;
@@ -28,6 +24,10 @@ body {
     flex-shrink: 0;
 
     padding: 10px;
+}
+
+.Site-footer a {
+    color: inherit; /* Change hyperlink color  */
 }
 
 .footer-title {
@@ -43,4 +43,19 @@ body {
     /*background-size: cover;*/
     margin: 10px;
     padding: 10px 100px 50px;
+}
+
+.Site-content img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.vocab-lists-buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.vocab-lists-buttons a {
+    margin: 5px;
 }
