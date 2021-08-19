@@ -2,7 +2,7 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Vocabulary Lists</title>
+    <title>Vocabulary Lists | Simple HSK</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
@@ -18,14 +18,15 @@
 
     <hr>
 
-    <!-- Could turn this into a fragment if reused later -->
-    <div class="vocab-lists-buttons">
-        <a href="/hsk/1" class="btn btn-outline-primary" role="button">HSK 1</a>
-        <a href="/hsk/2" class="btn btn-outline-primary" role="button">HSK 2</a>
-        <a href="/hsk/3" class="btn btn-outline-primary" role="button">HSK 3</a>
-        <a href="/hsk/4" class="btn btn-outline-primary" role="button">HSK 4</a>
-        <a href="/hsk/5" class="btn btn-outline-primary" role="button">HSK 5</a>
-        <a href="/hsk/6" class="btn btn-outline-primary" role="button">HSK 6</a>
+    <div th:replace="fragments/vocab_nav :: vocab-nav">
+        <div class="vocab-lists-buttons" >
+            <a href="/hsk/1" class="btn btn-outline-primary" role="button">HSK 1</a>
+            <a href="/hsk/2" class="btn btn-outline-primary" role="button">HSK 2</a>
+            <a href="/hsk/3" class="btn btn-outline-primary" role="button">HSK 3</a>
+            <a href="/hsk/4" class="btn btn-outline-primary" role="button">HSK 4</a>
+            <a href="/hsk/5" class="btn btn-outline-primary" role="button">HSK 5</a>
+            <a href="/hsk/6" class="btn btn-outline-primary" role="button">HSK 6</a>
+        </div>
     </div>
 
 </div>
