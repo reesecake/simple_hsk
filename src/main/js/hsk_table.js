@@ -67,7 +67,7 @@ function TableHeadActions(props) {
             </th>
 
             <TablePagination
-                rowsPerPageOptions={[10, 25, 50, { label: 'All', value: rowCount }]}
+                rowsPerPageOptions={[10, 25, 50, 100, 500, 1000, { label: 'All', value: rowCount }]}
                 colSpan={4}
                 count={rowCount}
                 rowsPerPage={rowsPerPage}
@@ -85,7 +85,7 @@ function TableHeadActions(props) {
 }
 
 const headCells = [
-    { id: 'word', numeric: false, disablePadding: false, label: 'Word (Simplified)' },
+    { id: 'wordSimplified', numeric: false, disablePadding: false, label: 'Word (Simplified)' },
     { id: 'pinyin', numeric: false, disablePadding: false, label: 'pinyin' },
     { id: 'meaning', numeric: false, disablePadding: false, label: 'Meaning' },
     { id: 'level', numeric: true, disablePadding: false, label: 'Level' },
@@ -341,9 +341,9 @@ export default function CustomPaginationActionsTable(props) {
                                 const labelId = `enhanced-table-checkbox-${index}`;
 
                                 return (
-                                    <TableRow key={row.word}>
+                                    <TableRow key={row._links.self.href}>
                                         <TableCell component="th" id={labelId} scope="row" className={classes.tableCell}>
-                                            {row.word}
+                                            {row.wordSimplified}
                                         </TableCell>
                                         <TableCell style={{fontSize: "1.0rem"}}>{row.pinyin}</TableCell>
                                         <TableCell style={{fontSize: "1.0rem"}}>{row.meaning}</TableCell>
@@ -360,7 +360,7 @@ export default function CustomPaginationActionsTable(props) {
                     <TableFooter>
                         <TableRow>
                             <TablePagination
-                                rowsPerPageOptions={[10, 25, 50, { label: 'All', value: rows.length }]}
+                                rowsPerPageOptions={[10, 25, 50, 100, 500, 1000, { label: 'All', value: rows.length }]}
                                 colSpan={4}
                                 count={rows.length}
                                 rowsPerPage={rowsPerPage}
