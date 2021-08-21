@@ -1,12 +1,18 @@
-table {
-    border-collapse: collapse;
+html {
+    font-size: 100%;
 }
 
-td, th {
-    border: 1px solid #999;
-    padding: 0.5rem;
-    text-align: left;
-}
+/*https://betterwebtype.com/articles/2019/06/16/5-keys-to-accessible-web-typography/*/
+
+/*table {*/
+/*    border-collapse: collapse;*/
+/*}*/
+
+/*td, th {*/
+/*    border: 1px solid #999;*/
+/*    padding: 0.5rem;*/
+/*    text-align: left;*/
+/*}*/
 
 body {
     display: flex;
@@ -19,6 +25,10 @@ body {
     background-position: center top;
     background-size: cover;
 }
+
+/*p {*/
+/*    max-width: 33em;*/
+/*}*/
 
 .Site-footer {
     flex-shrink: 0;

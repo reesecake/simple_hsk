@@ -34,6 +34,13 @@ public class DatabaseLoader implements CommandLineRunner {
         this.vocabRepository.save(new Vocab("电视", "diàn shì", "TV", "HSK1"));
         this.vocabRepository.save(new Vocab("宾馆", "bīn guǎn", "hotel", "HSK2"));
         this.vocabRepository.save(new Vocab("打篮球", "dǎ lán qiú", "play basketball", "HSK2"));
+        this.vocabRepository.save(new Vocab("爱情", "ài qíng", "romance / love (romantic)", "HSK4"));
+        this.vocabRepository.save(new Vocab("安排", "ān pái", "to arrange / to plan / to set up", "HSK4"));
+        this.vocabRepository.save(new Vocab("安全", "ān quán", "safe / secure / safety / security", "HSK4"));
+        this.vocabRepository.save(new Vocab("按时", "àn shí", "on time / before deadline / on schedule", "HSK4"));
+        this.vocabRepository.save(new Vocab("按照", "àn zhào", "according to / in accordance with / in the light of / on the basis of", "HSK4"));
+        this.vocabRepository.save(new Vocab("百分之", "bǎi fēn zhī", "percent", "HSK4"));
+        this.vocabRepository.save(new Vocab("棒", "bàng", "a stick / club or cudgel / smart / capable / strong / wonderful / classifier for legs of a relay race", "HSK4"));
         this.vocabRepository.save(new Vocab("塑料袋", "sù liào dài", "plastic bag", "HSK4"));
         this.vocabRepository.findAll().forEach(vocab -> log.info("Preloaded " + vocab));
     }
