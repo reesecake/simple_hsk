@@ -33,7 +33,7 @@ public class VocabController {
     public ResponseEntity<List<Vocab>> getAllVocabs(
             @RequestParam(defaultValue = "HSK1") String hskLevel,
             @RequestParam(defaultValue = "0") Integer pageNo,
-            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "5000") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
 
         List<Vocab> list = service.getAllVocabs(hskLevel, pageNo, pageSize, sortBy);

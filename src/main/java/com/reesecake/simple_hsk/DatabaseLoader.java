@@ -8,28 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class DatabaseLoader implements CommandLineRunner {
 
     private static final Logger log = LoggerFactory.getLogger(DatabaseLoader.class);
 
-    private final EmployeeRepository employeeRepository;
     private final VocabRepository vocabRepository;
 
     @Autowired
-    public DatabaseLoader(EmployeeRepository employeeRepository, VocabRepository vocabRepository) {
-        this.employeeRepository = employeeRepository;
+    public DatabaseLoader(VocabRepository vocabRepository) {
         this.vocabRepository = vocabRepository;
     }
 
     @Override
     public void run(String... strings) throws Exception {
-        this.employeeRepository.save(new Employee("Frodo", "Baggins", "ring bearer"));
-        this.employeeRepository.save(new Employee("Josuke", "Higashikata", "Shine on you Crazy Diamond"));
-        this.employeeRepository.save(new Employee("Giorno", "Giovanna", "The Gold Experience"));
-        this.employeeRepository.save(new Employee("定助", "東方", "Soft & Wet"));
-        this.employeeRepository.findAll().forEach(employee -> log.info("Preloaded " + employee));
-
         this.vocabRepository.save(new Vocab("电脑", "diàn nǎo", "computer", "HSK1"));
         this.vocabRepository.save(new Vocab("电视", "diàn shì", "TV", "HSK1"));
         this.vocabRepository.save(new Vocab("宾馆", "bīn guǎn", "hotel", "HSK2"));
