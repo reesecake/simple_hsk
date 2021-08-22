@@ -27,3 +27,5 @@ module.exports = {
         ]
     }
 };
+
+// https://webpack.js.org/concepts/output/
