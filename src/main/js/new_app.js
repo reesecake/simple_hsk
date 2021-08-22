@@ -12,7 +12,7 @@ function HSK(props) {
     const [page, setPage] = useState({});
 
     useEffect(() => {
-        fetch('/api/vocabs/search/findVocabByLevelIsLessThanEqual?size=5000&level=HSK' + props.level, {
+        fetch('http://localhost:8080/api/vocabs/search/findVocabByLevelIsLessThanEqual?level=HSK' + props.level, {
             method: 'GET',
             headers: {
                 'Accept': 'application/hal+json'
