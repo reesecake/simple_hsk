@@ -18,7 +18,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="header">
     <a class="navbar-brand" style="display: flex; align-items: center" href="/">
-        <img src="assets/favicon_io/favicon-32x32.png" alt="logo"/>
+        <img th:src="@{/assets/favicon_io/favicon-32x32.png}" alt="logo"/>
         <span style="margin-left: 5px;"> Simple HSK</span>
     </a>
 
@@ -51,9 +51,6 @@
                     <a class="dropdown-item" href="/vocab-lists">See all</a>
                 </div>
             </li>
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>-->
-<!--            </li>-->
         </ul>
 <!--        <form class="form-inline my-2 my-lg-0">-->
 <!--            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
