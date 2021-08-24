@@ -21,15 +21,35 @@ public class VocabUnitTest {
 
     @Test
     @Transactional
-    void shouldReturnStuff() {
+    void shouldReturnVocab() {
         Vocab vocab = new Vocab("电视", "diàn shì", "TV", "HSK1");
         vocabRepository.save(vocab);
 
         List<Vocab> expectedList = new ArrayList<>();
         expectedList.add(vocab);
 
-        List<Vocab> name = service.getAllVocabs("HSK1", 0, 5000, "id");
+        List<Vocab> actualList = service.getAllVocabs("HSK1", 0, 5000, "id");
 
-        Assertions.assertEquals(expectedList, name);
+        Assertions.assertEquals(expectedList, actualList);
     }
+
+    @Test
+    @Transactional
+    void shouldReturnVocabByLevelIsLessThanEqual() {
+        Vocab vocab1 = new Vocab("电视", "diàn shì", "TV", "HSK1");
+        Vocab vocab2 = new Vocab("吧", "ba", "onomatopoeia", "HSK2");
+        Vocab vocab3 = new Vocab("阿姨", "āyí", "auntie", "HSK3");
+        vocabRepository.save(vocab1);
+        vocabRepository.save(vocab2);
+        vocabRepository.save(vocab3);
+
+        List<Vocab> expectedList = new ArrayList<>();
+        expectedList.add(vocab1);
+        expectedList.add(vocab2);
+
+        List<Vocab> actualList = service.getAllVocabs("HSK2", 0, 5000, "id");
+
+        Assertions.assertEquals(expectedList, actualList);
+    }
+
 }
