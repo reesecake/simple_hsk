@@ -4,6 +4,7 @@ version: 2.1
 
 orbs:
   codecov: codecov/codecov@3.0.0
+  maven: circleci/maven@0.0.12
 
 jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
@@ -36,6 +37,7 @@ jobs:
             mkdir -p ~/test-results/junit/
             find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/junit/ \;
           when: always
+      - codecov/upload
 
       - store_test_results:
           path: ~/test_results
@@ -47,12 +49,11 @@ workflows:
   # Inside the workflow, you provide the jobs you want to run, e.g this workflow runs the build-and-test job above.
   # CircleCI will run this workflow on every commit.
   # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows
-  sample:
-    jobs:
-      - build-and-test
-
   upload-to-codecov:
     jobs:
       - checkout
       - codecov/upload
 
+  maven_test:
+    jobs:
+      - maven/test # checkout, build, test, and upload test results
