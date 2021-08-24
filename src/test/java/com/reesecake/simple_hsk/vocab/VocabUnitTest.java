@@ -35,6 +35,19 @@ public class VocabUnitTest {
 
     @Test
     @Transactional
+    void shouldReturnEmptyVocab() {
+        Vocab vocab = new Vocab("吧", "ba", "onomatopoeia", "HSK2");
+        vocabRepository.save(vocab);
+
+        List<Vocab> expectedList = new ArrayList<>();
+
+        List<Vocab> actualList = service.getAllVocabs("HSK1", 0, 5000, "id");
+
+        Assertions.assertEquals(expectedList, actualList);
+    }
+
+    @Test
+    @Transactional
     void shouldReturnVocabByLevelIsLessThanEqual() {
         Vocab vocab1 = new Vocab("电视", "diàn shì", "TV", "HSK1");
         Vocab vocab2 = new Vocab("吧", "ba", "onomatopoeia", "HSK2");
