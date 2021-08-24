@@ -2,6 +2,9 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+orbs:
+  codecov: codecov/codecov@3.0.0
+
 jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
   build-and-test:
@@ -28,7 +31,7 @@ jobs:
           command: mvn test
 
       - run:
-          name: Save test results
+          name: Save surefire test results
           command: |
             mkdir -p ~/test-results/junit/
             find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/junit/ \;
@@ -37,7 +40,7 @@ jobs:
       - store_test_results:
           path: ~/test_results
       - store_artifacts:
-          path: ~/test-results/junit
+          path: target
 
 workflows:
   # Below is the definition of your workflow.
@@ -47,3 +50,9 @@ workflows:
   sample:
     jobs:
       - build-and-test
+
+  upload-to-codecov:
+    jobs:
+      - checkout
+      - codecov/upload
+
