@@ -54,6 +54,40 @@ public class VocabUnitTest {
 
     @Test
     @Transactional
+    void shouldReturnVocabSortedByPinyin() {
+        Vocab vocab1 = new Vocab("都", "dōu", "all", "HSK1");
+        Vocab vocab2 = new Vocab("零", "líng", "zero", "HSK2");
+        vocabRepository.save(vocab2);
+        vocabRepository.save(vocab1);
+
+        List<Vocab> expectedList = new ArrayList<>();
+        expectedList.add(vocab1);
+        expectedList.add(vocab2);
+
+        List<Vocab> actualList = service.getAllVocabs("HSK2", 0, 5000, "pinyin");
+
+        Assertions.assertEquals(expectedList, actualList);
+    }
+
+    @Test
+    @Transactional
+    void shouldReturnVocabSortedByMeaning() {
+        Vocab vocab1 = new Vocab("都", "dōu", "all", "HSK1");
+        Vocab vocab2 = new Vocab("零", "líng", "zero", "HSK2");
+        vocabRepository.save(vocab2);
+        vocabRepository.save(vocab1);
+
+        List<Vocab> expectedList = new ArrayList<>();
+        expectedList.add(vocab1);
+        expectedList.add(vocab2);
+
+        List<Vocab> actualList = service.getAllVocabs("HSK2", 0, 5000, "meaning");
+
+        Assertions.assertEquals(expectedList, actualList);
+    }
+
+    @Test
+    @Transactional
     void shouldReturnVocabSortedByLevel() {
         Vocab vocab1 = new Vocab("电视", "diàn shì", "TV", "HSK1");
         Vocab vocab2 = new Vocab("吧", "ba", "onomatopoeia", "HSK2");
@@ -64,7 +98,6 @@ public class VocabUnitTest {
         expectedList.add(vocab1);
         expectedList.add(vocab2);
 
-        // Sorting by id gives different order
         List<Vocab> actualList = service.getAllVocabs("HSK2", 0, 5000, "level");
 
         Assertions.assertEquals(expectedList, actualList);
