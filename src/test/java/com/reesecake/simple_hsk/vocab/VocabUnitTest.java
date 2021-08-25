@@ -117,10 +117,24 @@ public class VocabUnitTest {
     @Transactional
     void shouldReturnVocabEqualsTrue() {
         Vocab vocab = new Vocab("电视", "diàn shì", "TV", "HSK1");
+        vocabRepository.save(vocab);
 
-        boolean actual = vocab.equals(new Vocab("电视", "diàn shì", "TV", "HSK1"));
+        boolean actual = vocab.equals(vocab);
 
         Assertions.assertEquals(true, actual);
+    }
+
+    @Test
+    @Transactional
+    void shouldReturnVocabEqualsFalse() {
+        Vocab vocab1 = new Vocab("电视", "diàn shì", "TV", "HSK1");
+        Vocab vocab2 = new Vocab("吧", "ba", "onomatopoeia", "HSK2");
+        vocabRepository.save(vocab1);
+        vocabRepository.save(vocab2);
+
+        boolean actual = vocab1.equals(vocab2);
+
+        Assertions.assertEquals(false, actual);
     }
 
 }
