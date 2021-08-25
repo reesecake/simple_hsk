@@ -29,4 +29,8 @@ public class HomeController {
         return "hsk/hsk" + level_id;
     }
 
+    @RequestMapping(value = "/quiz")
+    public String quiz() {
+        return "quiz";
+    }
 }
