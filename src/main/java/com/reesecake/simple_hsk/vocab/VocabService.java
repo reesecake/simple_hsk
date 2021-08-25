@@ -1,6 +1,5 @@
 package com.reesecake.simple_hsk.vocab;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,10 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class VocabService
-{
-    @Autowired
-    VocabRepository repository;
+public class VocabService {
+
+    private final VocabRepository repository;
+
+    public VocabService(VocabRepository repository) {
+        this.repository = repository;
+    }
 
     // https://howtodoinjava.com/spring-boot2/pagination-sorting-example/
 

@@ -1,6 +1,5 @@
 package com.reesecake.simple_hsk.vocab;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +14,11 @@ import java.util.List;
 @RequestMapping("/vocabs")
 public class VocabController {
 
-    @Autowired
-    VocabService service;
+    private final VocabService service;
+
+    public VocabController(VocabService service) {
+        this.service = service;
+    }
 
     // https://howtodoinjava.com/spring-boot2/pagination-sorting-example/
 
