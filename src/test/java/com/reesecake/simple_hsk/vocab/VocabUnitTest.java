@@ -1,6 +1,7 @@
 package com.reesecake.simple_hsk.vocab;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,11 @@ public class VocabUnitTest {
     VocabRepository vocabRepository;
     @Autowired
     VocabService service;
+
+    @BeforeEach
+    void clearRepo() {
+        vocabRepository.deleteAll();
+    }
 
     @Test
     @Transactional
@@ -137,4 +143,86 @@ public class VocabUnitTest {
         Assertions.assertEquals(false, actual);
     }
 
+    @Test
+    void shouldReturnVocabEquals_Null() {
+        Vocab vocab = new Vocab("八", "bā", "eight", "HSK1");
+
+        boolean actual = vocab.equals(null);
+
+        Assertions.assertFalse(actual);
+    }
+
+    @Test
+    void shouldReturnVocabHashCode() {
+        Vocab vocab = new Vocab("爸爸", "bàba", "Dad", "HSK1");
+
+        Assertions.assertEquals(977216114, vocab.hashCode());
+    }
+
+    @Test
+    void shouldSetVocabId() {
+        Vocab vocab = new Vocab("多", "duō", "many", "HSK1");
+
+        Assertions.assertNull(vocab.getId());
+
+        vocab.setId(69L);
+
+        Assertions.assertEquals(69L, vocab.getId());
+    }
+
+    @Test
+    void shouldSetVocabWordSimplified() {
+        // fun fact: 背景 means 'background' but is similarly pronounced bèijǐng
+        Vocab vocab = new Vocab("背景", "Běijīng", "Beijing", "HSK1");  // do not copy
+
+        vocab.setWordSimplified("北京");
+
+        Assertions.assertEquals("北京", vocab.getWordSimplified());
+    }
+
+    @Test
+    void shouldSetVocabWordTraditional() {
+        Vocab vocab = new Vocab("打电话", "dǎ diànhuà", "make a phone call", "HSK1");
+
+        vocab.setWordTraditional("打電話");
+
+        Assertions.assertEquals("打電話", vocab.getWordTraditional());
+    }
+
+    @Test
+    void shouldSetVocabPinyin() {
+        // fun fact: 北京 is pronounced Běijīng but means Beijing (city) ass opposed to bèijǐng (background)
+        Vocab vocab = new Vocab("北京", "bèijǐng", "Beijing", "HSK1");  // do not copy
+
+        vocab.setPinyin("Běijīng");
+
+        Assertions.assertEquals("Běijīng", vocab.getPinyin());
+    }
+
+    @Test
+    void shouldSetVocabPinyinNumbered() {
+        Vocab vocab = new Vocab("大", "dà", "big; large", "HSK1");
+
+        vocab.setPinyinNumbered("da4");
+
+        Assertions.assertEquals("da4", vocab.getPinyinNumbered());
+    }
+
+    @Test
+    void shouldSetVocabMeaning() {
+        Vocab vocab = new Vocab("二", "èr", "tHrEe", "HSK1");  // do not copy
+
+        vocab.setMeaning("two");
+
+        Assertions.assertEquals("two", vocab.getMeaning());
+    }
+
+    @Test
+    void shouldSetVocabLevel() {
+        Vocab vocab = new Vocab("杯子", "bēizi", "cup; glass", "HSK3");  // do not copy
+
+        vocab.setLevel("HSK1");  // set correct level
+
+        Assertions.assertEquals("HSK1", vocab.getLevel());
+    }
 }
