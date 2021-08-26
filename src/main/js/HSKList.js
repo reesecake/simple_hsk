@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CustomPaginationActionsTable from "./hsk_table";
+import {LinearProgress} from "@material-ui/core";
 
 const ReactDOM = require('react-dom');
 
@@ -35,7 +36,7 @@ function HSKList(props) {
     if (error) {
         return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
-        return <div>Loading...</div>;
+        return <LinearProgress color="secondary" />;
     } else {
         return (
             <div>
