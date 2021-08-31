@@ -3,7 +3,8 @@ var path = require('path');
 module.exports = {
     entry: {
         app: './src/main/js/app.js',
-        hsk: './src/main/js/new_app.js',
+        hsk: './src/main/js/HSKList.js',
+        quiz: './src/main/js/HSKQuiz.js',
     },
     devtool: 'sourcemaps',
     cache: true,
