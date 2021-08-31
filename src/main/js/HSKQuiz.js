@@ -43,7 +43,6 @@ function HSKQuiz(props) {
     // }, [meanings]);
 
     const handleLevelChange = (event) => {
-        console.log("changed level to: ", event.target.value);
         setLevel(event.target.value);
         setIsLoaded(false);
     };

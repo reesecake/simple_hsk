@@ -161,7 +161,7 @@ export default function QuizForm(props) {
         event.preventDefault();
 
         // console.log("values:", values);
-        console.log("questions: ", questions);
+        // console.log("questions: ", questions);
 
         let results = {};
         let tmpHelperTexts = {};
@@ -188,33 +188,36 @@ export default function QuizForm(props) {
     return (
         <div className={classes.root}>
             <Grid container spacing={3}>
-                <Grid item xs={6}>
-                    <QuizLevelSelector level={level} updateQuizLevel={handleLevelChange} />
-                </Grid>
+                <Grid container item direction={"row"} alignItems={"center"}>
+                    <Grid item xs={6}>
+                        <QuizLevelSelector level={level} updateQuizLevel={handleLevelChange} />
+                    </Grid>
 
-                <Grid item xs={6}>
-                    <div className={classes.wrapper}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            className={buttonClassname}
-                            disabled={loading}
-                            onClick={handleButtonClick}
-                        >
-                            Reload
-                        </Button>
-                        {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
-                    </div>
+                    <Grid item xs={6}>
+                        <div className={classes.wrapper}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                className={buttonClassname}
+                                disabled={loading}
+                                onClick={handleButtonClick}
+                            >
+                                Reload
+                            </Button>
+                            {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+                        </div>
+                    </Grid>
                 </Grid>
 
                 <Grid item xs={12}>
-                    <div>{score} / 10</div>
+                    <div style={{"fontSize": "1.2rem"}}>Score: {score} / 10</div>
                 </Grid>
 
                 <Grid container item xs={12} alignItems={"flex-start"}>
                     <form onSubmit={handleSubmit} className={classes.form}>
-                        {questions.map((question) => (
-                            <Grid item xs={12}>
+                        {questions.map((question, index) => (
+                            <Grid container item xs={12} direction={"row"} justifyContent={"flex-start"} alignItems={"flex-start"}>
+                                <div style={{"marginTop": "24px"}}>{index + 1}.</div>
                                 <Question key={question._links.self.href}
                                           question={question}
                                           values={values}
