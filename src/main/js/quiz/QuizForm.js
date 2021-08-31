@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
-import {Button, CircularProgress, Divider} from "@material-ui/core";
+import {Button, CircularProgress, Divider, Grid} from "@material-ui/core";
 import {green} from "@material-ui/core/colors";
 import clsx from "clsx";
 import _ from 'underscore';
@@ -187,37 +187,49 @@ export default function QuizForm(props) {
 
     return (
         <div className={classes.root}>
-            <QuizLevelSelector level={level} updateQuizLevel={handleLevelChange} />
+            <Grid container spacing={3}>
+                <Grid item xs={6}>
+                    <QuizLevelSelector level={level} updateQuizLevel={handleLevelChange} />
+                </Grid>
 
-            <div className={classes.wrapper}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    className={buttonClassname}
-                    disabled={loading}
-                    onClick={handleButtonClick}
-                >
-                    Reload
-                </Button>
-                {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
-            </div>
+                <Grid item xs={6}>
+                    <div className={classes.wrapper}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            className={buttonClassname}
+                            disabled={loading}
+                            onClick={handleButtonClick}
+                        >
+                            Reload
+                        </Button>
+                        {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+                    </div>
+                </Grid>
 
-            <div>{score} / 10</div>
+                <Grid item xs={12}>
+                    <div>{score} / 10</div>
+                </Grid>
 
-            <form onSubmit={handleSubmit} className={classes.form}>
-                {questions.map((question) => (
-                    <Question key={question._links.self.href}
-                              question={question}
-                              values={values}
-                              setValues={setValues}
-                              errors={errors}
-                              helperTexts={helperTexts} />
-                ))}
+                <Grid container item xs={12} alignItems={"flex-start"}>
+                    <form onSubmit={handleSubmit} className={classes.form}>
+                        {questions.map((question) => (
+                            <Grid item xs={12}>
+                                <Question key={question._links.self.href}
+                                          question={question}
+                                          values={values}
+                                          setValues={setValues}
+                                          errors={errors}
+                                          helperTexts={helperTexts} />
+                            </Grid>
+                        ))}
 
-                <Button type="submit" variant="outlined" color="primary" className="submitQuiz">
-                    Check Answers
-                </Button>
-            </form>
+                        <Button type="submit" variant="outlined" color="primary" className="submitQuiz">
+                            Check Answers
+                        </Button>
+                    </form>
+                </Grid>
+            </Grid>
         </div>
     );
 }
