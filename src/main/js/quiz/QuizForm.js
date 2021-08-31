@@ -6,16 +6,27 @@ import clsx from "clsx";
 import _ from 'underscore';
 import Question from "./Question";
 
-function MakeQuestions(vocabs) {
+/**
+ * Generates an array of objects sampled from API. Adds a new key called answers with an array of the correct meaning
+ * and three random meanings as incorrect answers.
+ * @param vocabs - an array of Vocab objects fetched from the API
+ * @param meanings - an array of Strings derived from the meanings of Vocabs fetched from the API.
+ * @returns {*}
+ */
+function MakeQuestions(vocabs, meanings) {
 
     let newQuestions = _.sample(vocabs, 10);
 
     // console.log("sampled: ", newQuestions);
 
+    let wrongAnswers = _.sample(meanings, 3);
+
     newQuestions = newQuestions.map((ques) => {
+        let answers = [ques.meaning];
+        answers.push(...wrongAnswers);
         return {
             ...ques,
-            answers: [ques.meaning, "wrong1", "wrong2", "wrong3"]
+            answers: _.shuffle(answers),
         };
     });
 
@@ -91,9 +102,9 @@ const useStyles = makeStyles({
 });
 
 export default function QuizForm(props) {
-    const { vocabs, level } = props;
+    const { vocabs, level , meanings } = props;
     const classes = useStyles();
-    const [questions, setQuestions] = useState(() => { return MakeQuestions(vocabs) });
+    const [questions, setQuestions] = useState(() => { return MakeQuestions(vocabs, meanings) });
     // button with loading:
     const [loading, setLoading] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
@@ -136,7 +147,7 @@ export default function QuizForm(props) {
         if (!loading) {
             setSuccess(false);
             setLoading(true);
-            setQuestions(MakeQuestions(vocabs));  // refresh for new questions
+            setQuestions(MakeQuestions(vocabs, meanings));  // refresh for new questions
             timer.current = window.setTimeout(() => {
                 setSuccess(true);
                 setLoading(false);
