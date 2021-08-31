@@ -29,18 +29,27 @@ function MakeValues(questions) {
         values[question.wordSimplified] = '';
     });
 
-    console.log("setting values: ", values);
+    // console.log("setting values: ", values);
 
     return values;
 }
 
 function MakeErrors(questions) {
-    const errors = {}
+    let errors = {}
     questions.forEach(question => {
         errors[question.wordSimplified] = false;
     });
 
     return errors;
+}
+
+function MakeHelperTexts(questions) {
+    let helperTexts = {}
+    questions.forEach(question => {
+        helperTexts[question.wordSimplified] = 'Choose wisely';
+    });
+
+    return helperTexts;
 }
 
 const useStyles = makeStyles({
@@ -92,7 +101,7 @@ export default function QuizForm(props) {
     // radio:
     const [values, setValues] = React.useState(() => { return MakeValues(questions) });
     const [errors, setErrors] = React.useState(() => { return MakeErrors(questions) });
-    const [helperText, setHelperText] = React.useState('Choose wisely');
+    const [helperTexts, setHelperTexts] = React.useState(() => { return MakeHelperTexts(questions) });
 
     const buttonClassname = clsx({
         [classes.buttonSuccess]: success,
@@ -109,14 +118,19 @@ export default function QuizForm(props) {
         setLoading(false);
         setValues(MakeValues(questions));
         setErrors(MakeErrors(questions));
+        setHelperTexts(MakeHelperTexts(questions));
         return () => {
             clearTimeout(timer.current);
         };
     }, [questions]);
 
-    useEffect(() => {
-        console.log("errors: ", errors);
-    }, [errors]);
+    // useEffect(() => {
+    //     console.log("errors: ", errors);
+    // }, [errors]);
+    //
+    // useEffect(() => {
+    //     console.log("helperTexts: ", helperTexts);
+    // }, [helperTexts]);
 
     const handleButtonClick = () => {
         if (!loading) {
@@ -133,19 +147,25 @@ export default function QuizForm(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        console.log("values:", values);
-        // console.log("questions: ", questions);
+        // console.log("values:", values);
+        console.log("questions: ", questions);
 
         let results = {};
+        let tmpHelperTexts = {};
 
         for (const ques of questions) {
             results = {
                 ...results,
                 [ques.wordSimplified]: values[ques.wordSimplified] !== ques.meaning,
             };
+            tmpHelperTexts = {
+                ...tmpHelperTexts,
+                [ques.wordSimplified]: values[ques.wordSimplified] !== ques.meaning ? 'Sorry, wrong answer' : 'Correct!',
+            };
         }
 
         setErrors(results);
+        setHelperTexts(tmpHelperTexts);
     };
 
     return (
@@ -165,7 +185,12 @@ export default function QuizForm(props) {
 
             <form onSubmit={handleSubmit} className={classes.form}>
                 {questions.map((question) => (
-                    <Question question={question} values={values} setValues={setValues} errors={errors} />
+                    <Question key={question._links.self.href}
+                              question={question}
+                              values={values}
+                              setValues={setValues}
+                              errors={errors}
+                              helperTexts={helperTexts} />
                 ))}
 
                 <Button type="submit" variant="outlined" color="primary" className="submitQuiz">
