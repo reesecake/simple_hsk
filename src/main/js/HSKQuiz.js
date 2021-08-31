@@ -7,14 +7,14 @@ const ReactDOM = require('react-dom');
 const root = '/api'
 
 function HSKQuiz(props) {
+    const [level, setLevel] = useState(props.level);
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [items, setItems] = useState([]);
-    const [page, setPage] = useState({});
     const [meanings, setMeanings] = useState([]);
 
     useEffect(() => {
-        fetch('/api/vocabs/search/findVocabByLevelIsLessThanEqual?size=5000&level=HSK' + props.level, {
+        fetch('/api/vocabs/search/findVocabsByLevel?level=HSK' + level, {
             method: 'GET',
             headers: {
                 'Accept': 'application/hal+json'
@@ -24,7 +24,6 @@ function HSKQuiz(props) {
             .then(
                 (result) => {
                     setItems(result._embedded.vocabs);
-                    setPage(result.page);
                     let tmpMeanings = [];
                     for (let vocab of result._embedded.vocabs) {
                         tmpMeanings.push(vocab.meaning);
@@ -37,11 +36,17 @@ function HSKQuiz(props) {
                     setIsLoaded(true);
                 }
             )
-    }, []);
+    }, [level]);
 
     // useEffect(() => {
     //     console.log("meanings: ", meanings);
     // }, [meanings]);
+
+    const handleLevelChange = (event) => {
+        console.log("changed level to: ", event.target.value);
+        setLevel(event.target.value);
+        setIsLoaded(false);
+    };
 
     if (error) {
         return <div>Error: {error.message}</div>;
@@ -49,7 +54,11 @@ function HSKQuiz(props) {
         return <LinearProgress color="secondary" />;
     } else {
         return (
-            <QuizForm vocabs={items} level={props.level} meanings={meanings} />
+            <QuizForm vocabs={items}
+                      level={level}
+                      handleLevelChange={handleLevelChange}
+                      meanings={meanings}
+            />
         );
     }
 }

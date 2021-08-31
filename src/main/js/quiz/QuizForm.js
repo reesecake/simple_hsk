@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
-import {Button, CircularProgress} from "@material-ui/core";
+import {Button, CircularProgress, Divider} from "@material-ui/core";
 import {green} from "@material-ui/core/colors";
 import clsx from "clsx";
 import _ from 'underscore';
 import Question from "./Question";
+import QuizLevelSelector from "./QuizLevelSelector";
 
 /**
  * Generates an array of objects sampled from API. Adds a new key called answers with an array of the correct meaning
@@ -19,10 +20,9 @@ function MakeQuestions(vocabs, meanings) {
 
     // console.log("sampled: ", newQuestions);
 
-    let wrongAnswers = _.sample(meanings, 3);
-
     newQuestions = newQuestions.map((ques) => {
         let answers = [ques.meaning];
+        let wrongAnswers = _.sample(meanings, 3);
         answers.push(...wrongAnswers);
         return {
             ...ques,
@@ -102,9 +102,10 @@ const useStyles = makeStyles({
 });
 
 export default function QuizForm(props) {
-    const { vocabs, level , meanings } = props;
+    const { vocabs, level, handleLevelChange, meanings } = props;
     const classes = useStyles();
     const [questions, setQuestions] = useState(() => { return MakeQuestions(vocabs, meanings) });
+    const [ score, setScore ] = useState(0);
     // button with loading:
     const [loading, setLoading] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
@@ -148,6 +149,7 @@ export default function QuizForm(props) {
             setSuccess(false);
             setLoading(true);
             setQuestions(MakeQuestions(vocabs, meanings));  // refresh for new questions
+            setScore(0);  // reset score counter
             timer.current = window.setTimeout(() => {
                 setSuccess(true);
                 setLoading(false);
@@ -163,6 +165,7 @@ export default function QuizForm(props) {
 
         let results = {};
         let tmpHelperTexts = {};
+        let tmpScore = 0;
 
         for (const ques of questions) {
             results = {
@@ -173,14 +176,19 @@ export default function QuizForm(props) {
                 ...tmpHelperTexts,
                 [ques.wordSimplified]: values[ques.wordSimplified] !== ques.meaning ? 'Sorry, wrong answer' : 'Correct!',
             };
+
+            if (values[ques.wordSimplified] === ques.meaning) tmpScore++;
         }
 
         setErrors(results);
         setHelperTexts(tmpHelperTexts);
+        setScore(tmpScore);
     };
 
     return (
         <div className={classes.root}>
+            <QuizLevelSelector level={level} updateQuizLevel={handleLevelChange} />
+
             <div className={classes.wrapper}>
                 <Button
                     variant="contained"
@@ -193,6 +201,8 @@ export default function QuizForm(props) {
                 </Button>
                 {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
             </div>
+
+            <div>{score} / 10</div>
 
             <form onSubmit={handleSubmit} className={classes.form}>
                 {questions.map((question) => (
