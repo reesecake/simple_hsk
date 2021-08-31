@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import CustomPaginationActionsTable from "./hsk_table";
+import {LinearProgress} from "@material-ui/core";
 
 const ReactDOM = require('react-dom');
 
 const root = '/api'
 
-function HSK(props) {
+function HSKList(props) {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [items, setItems] = useState([]);
@@ -35,7 +36,7 @@ function HSK(props) {
     if (error) {
         return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
-        return <div>Loading...</div>;
+        return <LinearProgress color="secondary" />;
     } else {
         return (
             <div>
@@ -48,6 +49,6 @@ function HSK(props) {
 // https://stackoverflow.com/questions/21591512/pass-props-from-template-into-react-js-root-node
 let container = document.getElementById('react-hsk');
 ReactDOM.render(
-    <HSK level={container.getAttribute('level')}/>,
+    <HSKList level={container.getAttribute('level')}/>,
     container
 );
