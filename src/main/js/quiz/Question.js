@@ -12,10 +12,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Question(props) {
-    const { question, values, setValues, errors } = props;
+    const { question, values, setValues, errors, helperTexts } = props;
     const classes = useStyles();
 
-    const [helperText, setHelperText] = React.useState('Choose wisely');
 
     const handleRadioChange = (event) => {
         setValues({
@@ -29,10 +28,10 @@ export default function Question(props) {
             <FormLabel component="legend">{question.wordSimplified}</FormLabel>
             <RadioGroup aria-label="quiz" name="quiz" value={values[question.wordSimplified]} onChange={handleRadioChange}>
                 {question.answers.map((option) => (
-                    <FormControlLabel value={option} control={<Radio />} label={option} />
+                    <FormControlLabel key={option} value={option} control={<Radio />} label={option} />
                 ))}
             </RadioGroup>
-            <FormHelperText>{helperText}</FormHelperText>
+            <FormHelperText>{helperTexts[question.wordSimplified]}</FormHelperText>
         </FormControl>
     );
 }
