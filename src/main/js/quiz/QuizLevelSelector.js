@@ -17,12 +17,12 @@ export default function QuizLevelSelector(props) {
                     id: 'outlined-level-native-simple',
                 }}
             >
-                <option value={1}>HSK1</option>
-                <option value={2}>HSK2</option>
-                <option value={3}>HSK3</option>
-                <option value={4}>HSK4</option>
-                <option value={5}>HSK5</option>
-                <option value={6}>HSK6</option>
+                <option value={1}>HSK 1</option>
+                <option value={2}>HSK 2</option>
+                <option value={3}>HSK 3</option>
+                <option value={4}>HSK 4</option>
+                <option value={5}>HSK 5</option>
+                <option value={6}>HSK 6</option>
             </Select>
         </FormControl>
     );

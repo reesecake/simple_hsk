@@ -193,7 +193,7 @@ export default function QuizForm(props) {
                         <QuizLevelSelector level={level} updateQuizLevel={handleLevelChange} />
                     </Grid>
 
-                    <Grid item xs={6}>
+                    <Grid container item xs={6} justifyContent={"flex-end"}>
                         <div className={classes.wrapper}>
                             <Button
                                 variant="contained"
@@ -216,8 +216,9 @@ export default function QuizForm(props) {
                 <Grid container item xs={12} alignItems={"flex-start"}>
                     <form onSubmit={handleSubmit} className={classes.form}>
                         {questions.map((question, index) => (
-                            <Grid container item xs={12} direction={"row"} justifyContent={"flex-start"} alignItems={"flex-start"}>
-                                <div style={{"marginTop": "24px"}}>{index + 1}.</div>
+                            <Grid container item xs={12} direction={"row"} justifyContent={"flex-start"} alignItems={"flex-start"}
+                                  key={index}>
+                                <div key={index} style={{"marginTop": "24px"}}>{index + 1}.</div>
                                 <Question key={question._links.self.href}
                                           question={question}
                                           values={values}
