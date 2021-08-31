@@ -11,6 +11,7 @@ function HSKQuiz(props) {
     const [isLoaded, setIsLoaded] = useState(false);
     const [items, setItems] = useState([]);
     const [page, setPage] = useState({});
+    const [meanings, setMeanings] = useState([]);
 
     useEffect(() => {
         fetch('/api/vocabs/search/findVocabByLevelIsLessThanEqual?size=5000&level=HSK' + props.level, {
@@ -24,6 +25,11 @@ function HSKQuiz(props) {
                 (result) => {
                     setItems(result._embedded.vocabs);
                     setPage(result.page);
+                    let tmpMeanings = [];
+                    for (let vocab of result._embedded.vocabs) {
+                        tmpMeanings.push(vocab.meaning);
+                    }
+                    setMeanings(tmpMeanings);
                     setIsLoaded(true);
                 },
                 (error) => {
@@ -31,7 +37,11 @@ function HSKQuiz(props) {
                     setIsLoaded(true);
                 }
             )
-    }, [])
+    }, []);
+
+    // useEffect(() => {
+    //     console.log("meanings: ", meanings);
+    // }, [meanings]);
 
     if (error) {
         return <div>Error: {error.message}</div>;
@@ -39,7 +49,7 @@ function HSKQuiz(props) {
         return <LinearProgress color="secondary" />;
     } else {
         return (
-            <QuizForm vocabs={items} level={props.level}/>
+            <QuizForm vocabs={items} level={props.level} meanings={meanings} />
         );
     }
 }
