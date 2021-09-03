@@ -1,22 +1,33 @@
 import React, {useEffect, useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
-import {Button, CircularProgress, Divider, Grid} from "@material-ui/core";
+import {
+    Button, ButtonBase,
+    CircularProgress,
+    Divider,
+    FormControl,
+    FormHelperText,
+    Grid,
+    Input,
+    InputLabel
+} from "@material-ui/core";
 import {green} from "@material-ui/core/colors";
 import clsx from "clsx";
 import _ from 'underscore';
 import Question from "./Question";
 import QuizLevelSelector from "./QuizLevelSelector";
+import QuizQuestionLimiter from "./QuizQuestionLimiter";
 
 /**
  * Generates an array of objects sampled from API. Adds a new key called answers with an array of the correct meaning
  * and three random meanings as incorrect answers.
  * @param vocabs - an array of Vocab objects fetched from the API
  * @param meanings - an array of Strings derived from the meanings of Vocabs fetched from the API.
+ * @param numQuestions - number of questions to display
  * @returns {*}
  */
-function MakeQuestions(vocabs, meanings) {
+function MakeQuestions(vocabs, meanings, numQuestions = 10) {
 
-    let newQuestions = _.sample(vocabs, 10);
+    let newQuestions = _.sample(vocabs, numQuestions);
 
     // console.log("sampled: ", newQuestions);
 
@@ -39,8 +50,6 @@ function MakeValues(questions) {
     questions.forEach(question => {
         values[question.wordSimplified] = '';
     });
-
-    // console.log("setting values: ", values);
 
     return values;
 }
@@ -105,10 +114,12 @@ export default function QuizForm(props) {
     const { vocabs, level, handleLevelChange, meanings } = props;
     const classes = useStyles();
     const [questions, setQuestions] = useState(() => { return MakeQuestions(vocabs, meanings) });
-    const [ score, setScore ] = useState(0);
+    const [score, setScore] = useState(0);
+    const [numQuestions, setNumQuestions] = useState(10);
     // button with loading:
     const [loading, setLoading] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
+    const [needsReload, setNeedsReload] = React.useState(false);
     const timer = React.useRef();
     // radio:
     const [values, setValues] = React.useState(() => { return MakeValues(questions) });
@@ -136,20 +147,13 @@ export default function QuizForm(props) {
         };
     }, [questions]);
 
-    // useEffect(() => {
-    //     console.log("errors: ", errors);
-    // }, [errors]);
-    //
-    // useEffect(() => {
-    //     console.log("helperTexts: ", helperTexts);
-    // }, [helperTexts]);
-
     const handleButtonClick = () => {
         if (!loading) {
             setSuccess(false);
             setLoading(true);
-            setQuestions(MakeQuestions(vocabs, meanings));  // refresh for new questions
+            setQuestions(MakeQuestions(vocabs, meanings, numQuestions));  // refresh for new questions
             setScore(0);  // reset score counter
+            setNeedsReload(false);
             timer.current = window.setTimeout(() => {
                 setSuccess(true);
                 setLoading(false);
@@ -159,9 +163,6 @@ export default function QuizForm(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
-        // console.log("values:", values);
-        // console.log("questions: ", questions);
 
         let results = {};
         let tmpHelperTexts = {};
@@ -189,16 +190,25 @@ export default function QuizForm(props) {
         <div className={classes.root}>
             <Grid container spacing={3}>
                 <Grid container item direction={"row"} alignItems={"center"}>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                         <QuizLevelSelector level={level} updateQuizLevel={handleLevelChange} />
                     </Grid>
 
-                    <Grid container item xs={6} justifyContent={"flex-end"}>
+                    <Grid item xs={4}>
+                        <QuizQuestionLimiter
+                            numQuestions={numQuestions}
+                            setNumQuestions={setNumQuestions}
+                            needsReload={needsReload}
+                            setNeedsReload={setNeedsReload}
+                        />
+                    </Grid>
+
+                    <Grid container item xs={4} justifyContent={"flex-end"}>
                         <div className={classes.wrapper}>
                             <Button
-                                variant="contained"
-                                color="primary"
-                                className={buttonClassname}
+                                variant={needsReload ? "contained" : "outlined"}
+                                color="secondary"
+                                // className={buttonClassname}
                                 disabled={loading}
                                 onClick={handleButtonClick}
                             >
@@ -210,7 +220,7 @@ export default function QuizForm(props) {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <div style={{"fontSize": "1.2rem"}}>Score: {score} / 10</div>
+                    <div style={{"fontSize": "1.2rem"}}>Score: {score} / {numQuestions}</div>
                 </Grid>
 
                 <Grid container item xs={12} alignItems={"flex-start"}>
