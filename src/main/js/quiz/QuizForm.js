@@ -6,16 +6,18 @@ import {
     Divider,
     FormControl,
     FormHelperText,
-    Grid,
+    Grid, IconButton,
     Input,
     InputLabel
 } from "@material-ui/core";
 import {green} from "@material-ui/core/colors";
+import SettingsIcon from '@material-ui/icons/Settings';
 import clsx from "clsx";
 import _ from 'underscore';
 import Question from "./Question";
 import QuizLevelSelector from "./QuizLevelSelector";
 import QuizQuestionLimiter from "./QuizQuestionLimiter";
+import QuizOptions from "./QuizOptions";
 
 /**
  * Generates an array of objects sampled from API. Adds a new key called answers with an array of the correct meaning
@@ -189,12 +191,13 @@ export default function QuizForm(props) {
     return (
         <div className={classes.root}>
             <Grid container spacing={3}>
-                <Grid container item direction={"row"} alignItems={"center"}>
-                    <Grid item xs={4}>
+                <Grid container item xs={6} direction={"row"}>
+                    <Grid item>
                         <QuizLevelSelector level={level} updateQuizLevel={handleLevelChange} />
                     </Grid>
-
-                    <Grid item xs={4}>
+                </Grid>
+                <Grid container item xs={6} direction={"row"} spacing={2} justifyContent={"flex-end"} alignItems={"center"}>
+                    <Grid item>
                         <QuizQuestionLimiter
                             numQuestions={numQuestions}
                             setNumQuestions={setNumQuestions}
@@ -203,7 +206,11 @@ export default function QuizForm(props) {
                         />
                     </Grid>
 
-                    <Grid container item xs={4} justifyContent={"flex-end"}>
+                    <Grid item>
+                        <QuizOptions />
+                    </Grid>
+
+                    <Grid item>
                         <div className={classes.wrapper}>
                             <Button
                                 variant={needsReload ? "contained" : "outlined"}
