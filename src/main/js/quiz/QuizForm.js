@@ -50,7 +50,7 @@ function MakeQuestions(vocabs, meanings, numQuestions = 10) {
 function MakeValues(questions) {
     const values = {}
     questions.forEach(question => {
-        values[question.wordSimplified] = '';
+        values[question.id] = '';
     });
 
     return values;
@@ -59,7 +59,7 @@ function MakeValues(questions) {
 function MakeErrors(questions) {
     let errors = {}
     questions.forEach(question => {
-        errors[question.wordSimplified] = false;
+        errors[question.id] = false;
     });
 
     return errors;
@@ -68,7 +68,7 @@ function MakeErrors(questions) {
 function MakeHelperTexts(questions) {
     let helperTexts = {}
     questions.forEach(question => {
-        helperTexts[question.wordSimplified] = 'Choose wisely';
+        helperTexts[question.id] = 'Choose wisely';
     });
 
     return helperTexts;
@@ -173,14 +173,14 @@ export default function QuizForm(props) {
         for (const ques of questions) {
             results = {
                 ...results,
-                [ques.wordSimplified]: values[ques.wordSimplified] !== ques.meaning,
+                [ques.id]: values[ques.id] !== ques.meaning,
             };
             tmpHelperTexts = {
                 ...tmpHelperTexts,
-                [ques.wordSimplified]: values[ques.wordSimplified] !== ques.meaning ? 'Sorry, wrong answer' : 'Correct!',
+                [ques.id]: values[ques.id] !== ques.meaning ? 'Sorry, wrong answer' : 'Correct!',
             };
 
-            if (values[ques.wordSimplified] === ques.meaning) tmpScore++;
+            if (values[ques.id] === ques.meaning) tmpScore++;
         }
 
         setErrors(results);
@@ -236,7 +236,7 @@ export default function QuizForm(props) {
                             <Grid container item xs={12} direction={"row"} justifyContent={"flex-start"} alignItems={"flex-start"}
                                   key={index}>
                                 <div key={index} style={{"marginTop": "24px"}}>{index + 1}.</div>
-                                <Question key={question._links.self.href}
+                                <Question key={question.id}
                                           question={question}
                                           values={values}
                                           setValues={setValues}

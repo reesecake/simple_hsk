@@ -46,28 +46,28 @@ const acquireHelperTextColor = message => {
 
 export default function Question(props) {
     const { question, values, setValues, errors, helperTexts } = props;
-    const classes = useStyles(helperTexts[question.wordSimplified])();
+    const classes = useStyles(helperTexts[question.id])();
 
 
     const handleRadioChange = (event) => {
         setValues({
             ...values,
-            [question.wordSimplified]: event.target.value,
+            [question.id]: event.target.value,
         });
     };
 
     return (
-        <FormControl component="fieldset" error={errors[question.wordSimplified]} className={classes.formControl}>
+        <FormControl component="fieldset" error={errors[question.id]} className={classes.formControl}>
             <FormLabel component="legend" className={classes.formLabel}>
                 {question.wordSimplified}
-                {helperTexts[question.wordSimplified] === "Correct!" && <CheckIcon style={{"marginLeft": "24px", "fontSize": "1.2rem"}}/>}
+                {helperTexts[question.id] === "Correct!" && <CheckIcon style={{"marginLeft": "24px", "fontSize": "1.2rem"}}/>}
             </FormLabel>
-            <RadioGroup aria-label="quiz" name="quiz" value={values[question.wordSimplified]} onChange={handleRadioChange}>
+            <RadioGroup aria-label="quiz" name="quiz" value={values[question.id]} onChange={handleRadioChange}>
                 {question.answers.map((option) => (
                     <FormControlLabel key={option} value={option} control={<Radio />} label={option} />
                 ))}
             </RadioGroup>
-            <FormHelperText>{helperTexts[question.wordSimplified]}</FormHelperText>
+            <FormHelperText>{helperTexts[question.id]}</FormHelperText>
         </FormControl>
     );
 }
