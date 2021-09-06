@@ -26,7 +26,10 @@ function HSKQuiz(props) {
                     setItems(result._embedded.vocabs);
                     let tmpMeanings = [];
                     for (let vocab of result._embedded.vocabs) {
-                        tmpMeanings.push(vocab.meaning);
+                        tmpMeanings.push(
+                            // vocab.meaning
+                            {"meaning": vocab.meaning, "pinyin": vocab.pinyin}
+                        );
                     }
                     setMeanings(tmpMeanings);
                     setIsLoaded(true);

@@ -25,17 +25,22 @@ import QuizOptions from "./QuizOptions";
  * @param vocabs - an array of Vocab objects fetched from the API
  * @param meanings - an array of Strings derived from the meanings of Vocabs fetched from the API.
  * @param numQuestions - number of questions to display
+ * @param includePinyin
  * @returns {*}
  */
-function MakeQuestions(vocabs, meanings, numQuestions = 10) {
+function MakeQuestions(vocabs, meanings, includePinyin,  numQuestions = 10) {
 
     let newQuestions = _.sample(vocabs, numQuestions);
 
     // console.log("sampled: ", newQuestions);
 
     newQuestions = newQuestions.map((ques) => {
-        let answers = [ques.meaning];
-        let wrongAnswers = _.sample(meanings, 3);
+        let answers = includePinyin ? [ques.pinyin + " - " + ques.meaning] : [ques.meaning];
+        let sampleMeanings = _.sample(meanings, 3);
+        let wrongAnswers = []
+        for (const sampleMeaning of sampleMeanings) {
+            wrongAnswers.push(includePinyin ? String(sampleMeaning.pinyin + " - " + sampleMeaning.meaning) : sampleMeaning.meaning);
+        }
         answers.push(...wrongAnswers);
         return {
             ...ques,
@@ -115,7 +120,9 @@ const useStyles = makeStyles({
 export default function QuizForm(props) {
     const { vocabs, level, handleLevelChange, meanings } = props;
     const classes = useStyles();
-    const [questions, setQuestions] = useState(() => { return MakeQuestions(vocabs, meanings) });
+
+    const [includePinyin, setIncludePinyin] = useState(true);
+    const [questions, setQuestions] = useState(() => { return MakeQuestions(vocabs, meanings, includePinyin) });
     const [score, setScore] = useState(0);
     const [numQuestions, setNumQuestions] = useState(10);
     // button with loading:
@@ -149,11 +156,11 @@ export default function QuizForm(props) {
         };
     }, [questions]);
 
-    const handleButtonClick = () => {
+    const handleReloadButtonClick = () => {
         if (!loading) {
             setSuccess(false);
             setLoading(true);
-            setQuestions(MakeQuestions(vocabs, meanings, numQuestions));  // refresh for new questions
+            setQuestions(MakeQuestions(vocabs, meanings, includePinyin, numQuestions));  // refresh for new questions
             setScore(0);  // reset score counter
             setNeedsReload(false);
             timer.current = window.setTimeout(() => {
@@ -171,16 +178,17 @@ export default function QuizForm(props) {
         let tmpScore = 0;
 
         for (const ques of questions) {
+            let correctAnswer = includePinyin ? ques.pinyin + " - " + ques.meaning : ques.meaning;
             results = {
                 ...results,
-                [ques.id]: values[ques.id] !== ques.meaning,
+                [ques.id]: values[ques.id] !== correctAnswer,
             };
             tmpHelperTexts = {
                 ...tmpHelperTexts,
-                [ques.id]: values[ques.id] !== ques.meaning ? 'Sorry, wrong answer' : 'Correct!',
+                [ques.id]: values[ques.id] !== correctAnswer ? 'Sorry, wrong answer' : 'Correct!',
             };
 
-            if (values[ques.id] === ques.meaning) tmpScore++;
+            if (values[ques.id] === correctAnswer) tmpScore++;
         }
 
         setErrors(results);
@@ -207,7 +215,11 @@ export default function QuizForm(props) {
                     </Grid>
 
                     <Grid item>
-                        <QuizOptions />
+                        <QuizOptions
+                            setNeedsReload={setNeedsReload}
+                            includePinyin={includePinyin}
+                            setIncludePinyin={setIncludePinyin}
+                        />
                     </Grid>
 
                     <Grid item>
@@ -217,7 +229,7 @@ export default function QuizForm(props) {
                                 color="secondary"
                                 // className={buttonClassname}
                                 disabled={loading}
-                                onClick={handleButtonClick}
+                                onClick={handleReloadButtonClick}
                             >
                                 Reload
                             </Button>
@@ -241,7 +253,8 @@ export default function QuizForm(props) {
                                           values={values}
                                           setValues={setValues}
                                           errors={errors}
-                                          helperTexts={helperTexts} />
+                                          helperTexts={helperTexts}
+                                />
                             </Grid>
                         ))}
 

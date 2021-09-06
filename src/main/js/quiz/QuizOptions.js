@@ -32,10 +32,9 @@ const useStyles = makeStyles({
 
 function SimpleDialog(props) {
     const classes = useStyles();
-    const { onClose, open } = props;
+    const { onClose, open, setNeedsReload, includePinyin, setIncludePinyin } = props;
 
     const [isCumulative, setCumulative] = useState(false);
-    const [includePinyin, setIncludePinyin] = useState(false);  // should be raised to higher components
     const [value, setValue] = useState("meaning");
 
     const handleClose = () => {
@@ -48,6 +47,7 @@ function SimpleDialog(props) {
 
     const handleIncludePinyin = () => {
         setIncludePinyin(!includePinyin);
+        setNeedsReload(true);  // TODO: could be improved to be conditional
     }
 
     const handleChange = (event) => {
@@ -94,7 +94,9 @@ SimpleDialog.propTypes = {
     open: PropTypes.bool.isRequired,
 };
 
-export default function QuizOptions() {
+export default function QuizOptions(props) {
+    const { setNeedsReload, includePinyin, setIncludePinyin } = props;
+
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -112,7 +114,13 @@ export default function QuizOptions() {
                     <SettingsIcon />
                 </IconButton>
             </Tooltip>
-            <SimpleDialog open={open} onClose={handleClose} />
+            <SimpleDialog
+                open={open}
+                onClose={handleClose}
+                setNeedsReload={setNeedsReload}
+                includePinyin={includePinyin}
+                setIncludePinyin={setIncludePinyin}
+            />
         </div>
     );
 }

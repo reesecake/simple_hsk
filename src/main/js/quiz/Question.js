@@ -49,7 +49,7 @@ export default function Question(props) {
     const classes = useStyles(helperTexts[question.id])();
 
 
-    const handleRadioChange = (event) => {
+    const handleAnswerRadioChange = (event) => {
         setValues({
             ...values,
             [question.id]: event.target.value,
@@ -62,7 +62,7 @@ export default function Question(props) {
                 {question.wordSimplified}
                 {helperTexts[question.id] === "Correct!" && <CheckIcon style={{"marginLeft": "24px", "fontSize": "1.2rem"}}/>}
             </FormLabel>
-            <RadioGroup aria-label="quiz" name="quiz" value={values[question.id]} onChange={handleRadioChange}>
+            <RadioGroup aria-label="quiz" name="quiz" value={values[question.id]} onChange={handleAnswerRadioChange}>
                 {question.answers.map((option) => (
                     <FormControlLabel key={option} value={option} control={<Radio />} label={option} />
                 ))}
