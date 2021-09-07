@@ -11,7 +11,6 @@ function HSKQuiz(props) {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [items, setItems] = useState([]);
-    const [meanings, setMeanings] = useState([]);
 
     useEffect(() => {
         fetch('/api/vocabs/search/findVocabsByLevel?level=HSK' + level, {
@@ -24,14 +23,6 @@ function HSKQuiz(props) {
             .then(
                 (result) => {
                     setItems(result._embedded.vocabs);
-                    let tmpMeanings = [];
-                    for (let vocab of result._embedded.vocabs) {
-                        tmpMeanings.push(
-                            // vocab.meaning
-                            {"meaning": vocab.meaning, "pinyin": vocab.pinyin}
-                        );
-                    }
-                    setMeanings(tmpMeanings);
                     setIsLoaded(true);
                 },
                 (error) => {
@@ -59,7 +50,6 @@ function HSKQuiz(props) {
             <QuizForm vocabs={items}
                       level={level}
                       handleLevelChange={handleLevelChange}
-                      meanings={meanings}
             />
         );
     }

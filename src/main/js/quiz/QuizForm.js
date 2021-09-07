@@ -23,27 +23,39 @@ import QuizOptions from "./QuizOptions";
  * Generates an array of objects sampled from API. Adds a new key called answers with an array of the correct meaning
  * and three random meanings as incorrect answers.
  * @param vocabs - an array of Vocab objects fetched from the API
- * @param meanings - an array of Strings derived from the meanings of Vocabs fetched from the API.
  * @param numQuestions - number of questions to display
  * @param includePinyin
+ * @param answerType
  * @returns {*}
  */
-function MakeQuestions(vocabs, meanings, includePinyin,  numQuestions = 10) {
+function MakeQuestions(vocabs, includePinyin, answerType, numQuestions = 10) {
 
     let newQuestions = _.sample(vocabs, numQuestions);
 
     // console.log("sampled: ", newQuestions);
 
     newQuestions = newQuestions.map((ques) => {
-        let answers = includePinyin ? [ques.pinyin + " - " + ques.meaning] : [ques.meaning];
-        let sampleMeanings = _.sample(meanings, 3);
-        let wrongAnswers = []
-        for (const sampleMeaning of sampleMeanings) {
-            wrongAnswers.push(includePinyin ? String(sampleMeaning.pinyin + " - " + sampleMeaning.meaning) : sampleMeaning.meaning);
+        let answers;
+        switch (answerType) {
+            case "meaning":
+                answers = includePinyin ? [ques.pinyin + " - " + ques.meaning] : [ques.meaning];
+                break;
+            default:
+                answers = [ques[answerType]];
         }
-        answers.push(...wrongAnswers);
+        let sampleMeanings = _.sample(vocabs, 3);
+        for (const sampleMeaning of sampleMeanings) {
+            switch (answerType) {
+                case "meaning":
+                    answers.push(includePinyin ? String(sampleMeaning.pinyin + " - " + sampleMeaning.meaning) : sampleMeaning.meaning);
+                    break;
+                default:
+                    answers.push(sampleMeaning[answerType]);
+            }
+        }
         return {
             ...ques,
+            meaning: includePinyin ? [ques.pinyin + " - " + ques.meaning] : [ques.meaning],
             answers: _.shuffle(answers),
         };
     });
@@ -118,11 +130,14 @@ const useStyles = makeStyles({
 });
 
 export default function QuizForm(props) {
-    const { vocabs, level, handleLevelChange, meanings } = props;
+    const { vocabs, level, handleLevelChange } = props;
     const classes = useStyles();
 
+    // options:
     const [includePinyin, setIncludePinyin] = useState(true);
-    const [questions, setQuestions] = useState(() => { return MakeQuestions(vocabs, meanings, includePinyin) });
+    const [answerType, setAnswerType] = useState("meaning");
+    // global quiz variables:
+    const [questions, setQuestions] = useState(() => { return MakeQuestions(vocabs, includePinyin, answerType) });
     const [score, setScore] = useState(0);
     const [numQuestions, setNumQuestions] = useState(10);
     // button with loading:
@@ -160,7 +175,7 @@ export default function QuizForm(props) {
         if (!loading) {
             setSuccess(false);
             setLoading(true);
-            setQuestions(MakeQuestions(vocabs, meanings, includePinyin, numQuestions));  // refresh for new questions
+            setQuestions(MakeQuestions(vocabs, includePinyin, answerType, numQuestions));  // refresh for new questions
             setScore(0);  // reset score counter
             setNeedsReload(false);
             timer.current = window.setTimeout(() => {
@@ -178,7 +193,15 @@ export default function QuizForm(props) {
         let tmpScore = 0;
 
         for (const ques of questions) {
-            let correctAnswer = includePinyin ? ques.pinyin + " - " + ques.meaning : ques.meaning;
+            let correctAnswer = "";
+            switch (answerType) {
+                case "meaning":
+                    correctAnswer = includePinyin ? ques.pinyin + " - " + ques.meaning : ques.meaning;
+                    break;
+                default:
+                    correctAnswer = ques[answerType];
+                    break;
+            }
             results = {
                 ...results,
                 [ques.id]: values[ques.id] !== correctAnswer,
@@ -219,6 +242,8 @@ export default function QuizForm(props) {
                             setNeedsReload={setNeedsReload}
                             includePinyin={includePinyin}
                             setIncludePinyin={setIncludePinyin}
+                            answerType={answerType}
+                            setAnswerType={setAnswerType}
                         />
                     </Grid>
 
@@ -250,10 +275,12 @@ export default function QuizForm(props) {
                                 <div key={index} style={{"marginTop": "24px"}}>{index + 1}.</div>
                                 <Question key={question.id}
                                           question={question}
+                                          answerType={answerType}
                                           values={values}
                                           setValues={setValues}
                                           errors={errors}
                                           helperTexts={helperTexts}
+                                          needsReload={needsReload}
                                 />
                             </Grid>
                         ))}

@@ -15,7 +15,7 @@ import {
     Tooltip
 } from "@material-ui/core";
 
-const answerTypes = [
+const answerTypeOptions = [
     {value: "meaning", label: "English meaning"},
     {value: "wordSimplified", label: "Word (Simplified)"},
     {value: "wordTraditional", label: "Word (Traditional)"},
@@ -32,10 +32,10 @@ const useStyles = makeStyles({
 
 function SimpleDialog(props) {
     const classes = useStyles();
-    const { onClose, open, setNeedsReload, includePinyin, setIncludePinyin } = props;
+    const { onClose, open, setNeedsReload, includePinyin, setIncludePinyin, answerType, setAnswerType } = props;
 
     const [isCumulative, setCumulative] = useState(false);
-    const [value, setValue] = useState("meaning");
+
 
     const handleClose = () => {
         onClose();
@@ -50,8 +50,9 @@ function SimpleDialog(props) {
         setNeedsReload(true);  // TODO: could be improved to be conditional
     }
 
-    const handleChange = (event) => {
-        setValue(event.target.value);
+    const handleAnswerTypeChange = (event) => {
+        setAnswerType(event.target.value);
+        setNeedsReload(true);
     };
 
     return (
@@ -74,12 +75,12 @@ function SimpleDialog(props) {
 
                 <FormControl component="fieldset">
                     <FormLabel component="legend">Answer with:</FormLabel>
-                    <RadioGroup aria-label="answerType" name="answerTypeRadio" value={value} onChange={handleChange}>
-                        {answerTypes.map((answerType) => (
-                            <FormControlLabel key={answerType.value}
-                                              value={answerType.value}
+                    <RadioGroup aria-label="answerType" name="answerTypeRadio" value={answerType} onChange={handleAnswerTypeChange}>
+                        {answerTypeOptions.map((answerTypeOption) => (
+                            <FormControlLabel key={answerTypeOption.value}
+                                              value={answerTypeOption.value}
                                               control={<Radio />}
-                                              label={answerType.label}
+                                              label={answerTypeOption.label}
                             />
                         ))}
                     </RadioGroup>
@@ -95,7 +96,7 @@ SimpleDialog.propTypes = {
 };
 
 export default function QuizOptions(props) {
-    const { setNeedsReload, includePinyin, setIncludePinyin } = props;
+    const { setNeedsReload, includePinyin, setIncludePinyin, answerType, setAnswerType } = props;
 
     const [open, setOpen] = React.useState(false);
 
@@ -120,6 +121,8 @@ export default function QuizOptions(props) {
                 setNeedsReload={setNeedsReload}
                 includePinyin={includePinyin}
                 setIncludePinyin={setIncludePinyin}
+                answerType={answerType}
+                setAnswerType={setAnswerType}
             />
         </div>
     );
