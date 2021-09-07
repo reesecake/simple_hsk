@@ -1,31 +1,52 @@
 import React, {useEffect, useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
-import {Button, CircularProgress, Divider, Grid} from "@material-ui/core";
+import {
+    Button, CircularProgress,
+    Grid
+} from "@material-ui/core";
 import {green} from "@material-ui/core/colors";
 import clsx from "clsx";
 import _ from 'underscore';
 import Question from "./Question";
 import QuizLevelSelector from "./QuizLevelSelector";
+import QuizQuestionLimiter from "./QuizQuestionLimiter";
+import QuizOptions from "./QuizOptions";
 
 /**
  * Generates an array of objects sampled from API. Adds a new key called answers with an array of the correct meaning
  * and three random meanings as incorrect answers.
  * @param vocabs - an array of Vocab objects fetched from the API
- * @param meanings - an array of Strings derived from the meanings of Vocabs fetched from the API.
+ * @param numQuestions - number of questions to display
+ * @param includePinyin - bool to prepend pinyin to the meaning in an answer
+ * @param answerType - String of the question attribute to use as the answers
  * @returns {*}
  */
-function MakeQuestions(vocabs, meanings) {
+function MakeQuestions(vocabs, includePinyin, answerType, numQuestions = 10) {
 
-    let newQuestions = _.sample(vocabs, 10);
+    let newQuestions = _.sample(vocabs, numQuestions);
 
     // console.log("sampled: ", newQuestions);
 
     newQuestions = newQuestions.map((ques) => {
-        let answers = [ques.meaning];
-        let wrongAnswers = _.sample(meanings, 3);
-        answers.push(...wrongAnswers);
+        let answers;
+        if (answerType === "meaning") {
+            answers = includePinyin ? [ques.pinyin + " - " + ques.meaning] : [ques.meaning];
+        } else {
+            answers = [ques[answerType]];
+        }
+        let sampleMeanings = _.sample(vocabs.filter(vocab => vocab.id !== ques.id), 3);
+        for (const sampleMeaning of sampleMeanings) {
+            if (answerType === "meaning") {
+                answers.push(includePinyin
+                    ? String(sampleMeaning.pinyin + " - " + sampleMeaning.meaning)
+                    : sampleMeaning.meaning);
+            } else {
+                answers.push(sampleMeaning[answerType]);
+            }
+        }
         return {
             ...ques,
+            meaning: includePinyin ? ques.pinyin + " - " + ques.meaning : ques.meaning,
             answers: _.shuffle(answers),
         };
     });
@@ -37,10 +58,8 @@ function MakeQuestions(vocabs, meanings) {
 function MakeValues(questions) {
     const values = {}
     questions.forEach(question => {
-        values[question.wordSimplified] = '';
+        values[question.id] = '';
     });
-
-    // console.log("setting values: ", values);
 
     return values;
 }
@@ -48,7 +67,7 @@ function MakeValues(questions) {
 function MakeErrors(questions) {
     let errors = {}
     questions.forEach(question => {
-        errors[question.wordSimplified] = false;
+        errors[question.id] = false;
     });
 
     return errors;
@@ -57,7 +76,7 @@ function MakeErrors(questions) {
 function MakeHelperTexts(questions) {
     let helperTexts = {}
     questions.forEach(question => {
-        helperTexts[question.wordSimplified] = 'Choose wisely';
+        helperTexts[question.id] = 'Choose wisely';
     });
 
     return helperTexts;
@@ -102,23 +121,28 @@ const useStyles = makeStyles({
 });
 
 export default function QuizForm(props) {
-    const { vocabs, level, handleLevelChange, meanings } = props;
+    const { vocabs, level, handleLevelChange, isCumulative, setCumulative } = props;
     const classes = useStyles();
-    const [questions, setQuestions] = useState(() => { return MakeQuestions(vocabs, meanings) });
-    const [ score, setScore ] = useState(0);
+
+    // options:
+    const [includePinyin, setIncludePinyin] = useState(true);
+    const [answerType, setAnswerType] = useState("meaning");
+    // global quiz variables:
+    const [questions, setQuestions] = useState(() => { return MakeQuestions(vocabs, includePinyin, answerType) });
+    const [score, setScore] = useState(0);
+    const [numQuestions, setNumQuestions] = useState(10);
     // button with loading:
-    const [loading, setLoading] = React.useState(false);
-    const [success, setSuccess] = React.useState(false);
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [needsReload, setNeedsReload] = useState(false);
     const timer = React.useRef();
     // radio:
-    const [values, setValues] = React.useState(() => { return MakeValues(questions) });
-    const [errors, setErrors] = React.useState(() => { return MakeErrors(questions) });
-    const [helperTexts, setHelperTexts] = React.useState(() => { return MakeHelperTexts(questions) });
-
-    const buttonClassname = clsx({
+    const [values, setValues] = useState(() => { return MakeValues(questions) });
+    const [errors, setErrors] = useState(() => { return MakeErrors(questions) });
+    const [helperTexts, setHelperTexts] = useState(() => { return MakeHelperTexts(questions) });
+    clsx({
         [classes.buttonSuccess]: success,
     });
-
     useEffect(() => {
         return () => {
             clearTimeout(timer.current);
@@ -136,20 +160,13 @@ export default function QuizForm(props) {
         };
     }, [questions]);
 
-    // useEffect(() => {
-    //     console.log("errors: ", errors);
-    // }, [errors]);
-    //
-    // useEffect(() => {
-    //     console.log("helperTexts: ", helperTexts);
-    // }, [helperTexts]);
-
-    const handleButtonClick = () => {
+    const handleReloadButtonClick = () => {
         if (!loading) {
             setSuccess(false);
             setLoading(true);
-            setQuestions(MakeQuestions(vocabs, meanings));  // refresh for new questions
+            setQuestions(MakeQuestions(vocabs, includePinyin, answerType, numQuestions));  // refresh for new questions
             setScore(0);  // reset score counter
+            setNeedsReload(false);
             timer.current = window.setTimeout(() => {
                 setSuccess(true);
                 setLoading(false);
@@ -160,24 +177,22 @@ export default function QuizForm(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // console.log("values:", values);
-        // console.log("questions: ", questions);
-
         let results = {};
         let tmpHelperTexts = {};
         let tmpScore = 0;
 
         for (const ques of questions) {
+            let correctAnswer = ques[answerType];
             results = {
                 ...results,
-                [ques.wordSimplified]: values[ques.wordSimplified] !== ques.meaning,
+                [ques.id]: values[ques.id] !== correctAnswer,
             };
             tmpHelperTexts = {
                 ...tmpHelperTexts,
-                [ques.wordSimplified]: values[ques.wordSimplified] !== ques.meaning ? 'Sorry, wrong answer' : 'Correct!',
+                [ques.id]: values[ques.id] !== correctAnswer ? 'Sorry, wrong answer' : 'Correct!',
             };
 
-            if (values[ques.wordSimplified] === ques.meaning) tmpScore++;
+            if (values[ques.id] === correctAnswer) tmpScore++;
         }
 
         setErrors(results);
@@ -188,19 +203,47 @@ export default function QuizForm(props) {
     return (
         <div className={classes.root}>
             <Grid container spacing={3}>
-                <Grid container item direction={"row"} alignItems={"center"}>
-                    <Grid item xs={6}>
+                <Grid container item xs={6} direction={"row"}>
+                    <Grid item>
                         <QuizLevelSelector level={level} updateQuizLevel={handleLevelChange} />
                     </Grid>
+                </Grid>
+                <Grid container item
+                      xs={6}
+                      direction={"row"}
+                      spacing={2}
+                      justifyContent={"flex-end"}
+                      alignItems={"center"}>
+                    <Grid item>
+                        <QuizQuestionLimiter
+                            vocabs={vocabs}
+                            numQuestions={numQuestions}
+                            setNumQuestions={setNumQuestions}
+                            needsReload={needsReload}
+                            setNeedsReload={setNeedsReload}
+                        />
+                    </Grid>
 
-                    <Grid container item xs={6} justifyContent={"flex-end"}>
+                    <Grid item>
+                        <QuizOptions
+                            setNeedsReload={setNeedsReload}
+                            isCumulative={isCumulative}
+                            setCumulative={setCumulative}
+                            includePinyin={includePinyin}
+                            setIncludePinyin={setIncludePinyin}
+                            answerType={answerType}
+                            setAnswerType={setAnswerType}
+                        />
+                    </Grid>
+
+                    <Grid item>
                         <div className={classes.wrapper}>
                             <Button
-                                variant="contained"
-                                color="primary"
-                                className={buttonClassname}
+                                variant={needsReload ? "contained" : "outlined"}
+                                color="secondary"
+                                // className={buttonClassname}
                                 disabled={loading}
-                                onClick={handleButtonClick}
+                                onClick={handleReloadButtonClick}
                             >
                                 Reload
                             </Button>
@@ -210,7 +253,7 @@ export default function QuizForm(props) {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <div style={{"fontSize": "1.2rem"}}>Score: {score} / 10</div>
+                    <div style={{"fontSize": "1.2rem"}}>Score: {score} / {numQuestions}</div>
                 </Grid>
 
                 <Grid container item xs={12} alignItems={"flex-start"}>
@@ -218,13 +261,16 @@ export default function QuizForm(props) {
                         {questions.map((question, index) => (
                             <Grid container item xs={12} direction={"row"} justifyContent={"flex-start"} alignItems={"flex-start"}
                                   key={index}>
-                                <div key={index} style={{"marginTop": "24px"}}>{index + 1}.</div>
-                                <Question key={question._links.self.href}
+                                <div key={`${index}:${question.wordSimplified}`} style={{"marginTop": "24px"}}>{index + 1}.</div>
+                                <Question key={`${index}:${question.wordSimplified}:${question.id}`}
                                           question={question}
+                                          answerType={answerType}
                                           values={values}
                                           setValues={setValues}
                                           errors={errors}
-                                          helperTexts={helperTexts} />
+                                          helperTexts={helperTexts}
+                                          needsReload={needsReload}
+                                />
                             </Grid>
                         ))}
 
