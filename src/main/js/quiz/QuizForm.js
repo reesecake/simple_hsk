@@ -221,6 +221,7 @@ export default function QuizForm(props) {
                 <Grid container item xs={6} direction={"row"} spacing={2} justifyContent={"flex-end"} alignItems={"center"}>
                     <Grid item>
                         <QuizQuestionLimiter
+                            vocabs={vocabs}
                             numQuestions={numQuestions}
                             setNumQuestions={setNumQuestions}
                             needsReload={needsReload}

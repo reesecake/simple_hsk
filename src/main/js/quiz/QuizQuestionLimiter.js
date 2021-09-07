@@ -2,14 +2,14 @@ import {FormControl, FormHelperText, Input, InputLabel} from "@material-ui/core"
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     limitForm: {
         height: "70px",  // 'allocate' space for helperText to not shift other elements up on render
     },
 }));
 
 export default function QuizQuestionLimiter(props) {
-    const { numQuestions, setNumQuestions, needsReload, setNeedsReload } = props;
+    const { vocabs, numQuestions, setNumQuestions, needsReload, setNeedsReload } = props;
     const classes = useStyles();
 
     const [newQuestionLimit, setNewQuestionLimit] = useState(numQuestions.valueOf());
@@ -22,7 +22,7 @@ export default function QuizQuestionLimiter(props) {
     }, [needsReload])
 
     const handleNewQuestionLimitChange = (event) => {
-        setNumQuestions(event.target.value);
+        setNumQuestions(event.target.value <= vocabs.length ? event.target.value : vocabs.length);
         setNeedsReload(Number.parseInt(event.target.value) !== Number(newQuestionLimit));
     };
 
