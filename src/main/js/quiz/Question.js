@@ -51,7 +51,7 @@ const questionTypes = {
 };
 
 export default function Question(props) {
-    const { question, answerType, values, setValues, errors, helperTexts, needsReload} = props;
+    const { question, answerType, values, setValues, errors, helperTexts, needsReload } = props;
     const classes = useStyles(helperTexts[question.id])();
 
     const [questionType, setQuestionType] = useState(questionTypes[answerType]);
@@ -75,7 +75,7 @@ export default function Question(props) {
                 {question[questionType]}
                 {helperTexts[question.id] === "Correct!" && <CheckIcon style={{"marginLeft": "24px", "fontSize": "1.2rem"}}/>}
             </FormLabel>
-            <RadioGroup aria-label="quiz" name="quiz" value={values[question.id]} onChange={handleAnswerRadioChange}>
+            <RadioGroup aria-label="quiz" name="quiz" value={values[question.id] || ""} onChange={handleAnswerRadioChange}>
                 {question.answers.map((option) => (
                     <FormControlLabel key={question[questionType] + ": " + option}
                                       value={option}
