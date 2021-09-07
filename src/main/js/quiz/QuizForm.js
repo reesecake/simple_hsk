@@ -1,17 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {
-    Button, ButtonBase,
-    CircularProgress,
-    Divider,
-    FormControl,
-    FormHelperText,
-    Grid, IconButton,
-    Input,
-    InputLabel
+    Button, CircularProgress,
+    Grid
 } from "@material-ui/core";
 import {green} from "@material-ui/core/colors";
-import SettingsIcon from '@material-ui/icons/Settings';
 import clsx from "clsx";
 import _ from 'underscore';
 import Question from "./Question";
@@ -149,11 +142,9 @@ export default function QuizForm(props) {
     const [values, setValues] = React.useState(() => { return MakeValues(questions) });
     const [errors, setErrors] = React.useState(() => { return MakeErrors(questions) });
     const [helperTexts, setHelperTexts] = React.useState(() => { return MakeHelperTexts(questions) });
-
-    const buttonClassname = clsx({
+    clsx({
         [classes.buttonSuccess]: success,
     });
-
     useEffect(() => {
         return () => {
             clearTimeout(timer.current);
