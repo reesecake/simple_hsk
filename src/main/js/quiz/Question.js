@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from "react";
-import {FormControl, FormControlLabel, FormHelperText, FormLabel, Radio, RadioGroup, rgbToHex} from "@material-ui/core";
+import {FormControl, FormControlLabel, FormHelperText, FormLabel, Radio, RadioGroup} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import CheckIcon from '@material-ui/icons/Check';
 
@@ -16,6 +16,10 @@ const useStyles = value => makeStyles((theme) => ({
     formLabel: {
         fontSize: '1.2rem',
         color: acquireFormLabelColor(value),
+    },
+    checkIcon: {
+        marginLeft: "24px",
+        fontSize: "1.2rem",
     },
     button: {
         margin: theme.spacing(1, 1, 0, 0),
@@ -73,11 +77,11 @@ export default function Question(props) {
         <FormControl component="fieldset" error={errors[question.id]} className={classes.formControl}>
             <FormLabel component="legend" className={classes.formLabel}>
                 {question[questionType]}
-                {helperTexts[question.id] === "Correct!" && <CheckIcon style={{"marginLeft": "24px", "fontSize": "1.2rem"}}/>}
+                {helperTexts[question.id] === "Correct!" && <CheckIcon className={classes.checkIcon}/>}
             </FormLabel>
             <RadioGroup aria-label="quiz" name="quiz" value={values[question.id] || ""} onChange={handleAnswerRadioChange}>
                 {question.answers.map((option) => (
-                    <FormControlLabel key={question.id + ": " + option}
+                    <FormControlLabel key={`${question.id}: ${option}`}
                                       value={option}
                                       control={<Radio />}
                                       label={option}

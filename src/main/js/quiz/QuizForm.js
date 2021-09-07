@@ -29,21 +29,19 @@ function MakeQuestions(vocabs, includePinyin, answerType, numQuestions = 10) {
 
     newQuestions = newQuestions.map((ques) => {
         let answers;
-        switch (answerType) {
-            case "meaning":
-                answers = includePinyin ? [ques.pinyin + " - " + ques.meaning] : [ques.meaning];
-                break;
-            default:
-                answers = [ques[answerType]];
+        if (answerType === "meaning") {
+            answers = includePinyin ? [ques.pinyin + " - " + ques.meaning] : [ques.meaning];
+        } else {
+            answers = [ques[answerType]];
         }
         let sampleMeanings = _.sample(vocabs.filter(vocab => vocab.id !== ques.id), 3);
         for (const sampleMeaning of sampleMeanings) {
-            switch (answerType) {
-                case "meaning":
-                    answers.push(includePinyin ? String(sampleMeaning.pinyin + " - " + sampleMeaning.meaning) : sampleMeaning.meaning);
-                    break;
-                default:
-                    answers.push(sampleMeaning[answerType]);
+            if (answerType === "meaning") {
+                answers.push(includePinyin
+                    ? String(sampleMeaning.pinyin + " - " + sampleMeaning.meaning)
+                    : sampleMeaning.meaning);
+            } else {
+                answers.push(sampleMeaning[answerType]);
             }
         }
         return {
@@ -134,14 +132,14 @@ export default function QuizForm(props) {
     const [score, setScore] = useState(0);
     const [numQuestions, setNumQuestions] = useState(10);
     // button with loading:
-    const [loading, setLoading] = React.useState(false);
-    const [success, setSuccess] = React.useState(false);
-    const [needsReload, setNeedsReload] = React.useState(false);
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [needsReload, setNeedsReload] = useState(false);
     const timer = React.useRef();
     // radio:
-    const [values, setValues] = React.useState(() => { return MakeValues(questions) });
-    const [errors, setErrors] = React.useState(() => { return MakeErrors(questions) });
-    const [helperTexts, setHelperTexts] = React.useState(() => { return MakeHelperTexts(questions) });
+    const [values, setValues] = useState(() => { return MakeValues(questions) });
+    const [errors, setErrors] = useState(() => { return MakeErrors(questions) });
+    const [helperTexts, setHelperTexts] = useState(() => { return MakeHelperTexts(questions) });
     clsx({
         [classes.buttonSuccess]: success,
     });
@@ -184,15 +182,7 @@ export default function QuizForm(props) {
         let tmpScore = 0;
 
         for (const ques of questions) {
-            let correctAnswer = "";
-            switch (answerType) {
-                case "meaning":
-                    correctAnswer = includePinyin ? ques.pinyin + " - " + ques.meaning : ques.meaning;
-                    break;
-                default:
-                    correctAnswer = ques[answerType];
-                    break;
-            }
+            let correctAnswer = ques[answerType];
             results = {
                 ...results,
                 [ques.id]: values[ques.id] !== correctAnswer,
@@ -218,7 +208,12 @@ export default function QuizForm(props) {
                         <QuizLevelSelector level={level} updateQuizLevel={handleLevelChange} />
                     </Grid>
                 </Grid>
-                <Grid container item xs={6} direction={"row"} spacing={2} justifyContent={"flex-end"} alignItems={"center"}>
+                <Grid container item
+                      xs={6}
+                      direction={"row"}
+                      spacing={2}
+                      justifyContent={"flex-end"}
+                      alignItems={"center"}>
                     <Grid item>
                         <QuizQuestionLimiter
                             vocabs={vocabs}
@@ -266,8 +261,8 @@ export default function QuizForm(props) {
                         {questions.map((question, index) => (
                             <Grid container item xs={12} direction={"row"} justifyContent={"flex-start"} alignItems={"flex-start"}
                                   key={index}>
-                                <div key={index + question.wordSimplified} style={{"marginTop": "24px"}}>{index + 1}.</div>
-                                <Question key={index + question.wordSimplified + question.id}
+                                <div key={`${index}:${question.wordSimplified}`} style={{"marginTop": "24px"}}>{index + 1}.</div>
+                                <Question key={`${index}:${question.wordSimplified}:${question.id}`}
                                           question={question}
                                           answerType={answerType}
                                           values={values}
