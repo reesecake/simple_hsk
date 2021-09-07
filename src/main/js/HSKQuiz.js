@@ -11,10 +11,13 @@ function HSKQuiz(props) {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [items, setItems] = useState([]);
-    const [meanings, setMeanings] = useState([]);
+
+    const [isCumulative, setCumulative] = useState(false);
 
     useEffect(() => {
-        fetch('/api/vocabs/search/findVocabsByLevel?level=HSK' + level, {
+        fetch(isCumulative
+            ? '/api/vocabs/search/findVocabByLevelIsLessThanEqual?size=5000&level=HSK' + level
+            : '/api/vocabs/search/findVocabsByLevel?level=HSK' + level, {
             method: 'GET',
             headers: {
                 'Accept': 'application/hal+json'
@@ -24,11 +27,6 @@ function HSKQuiz(props) {
             .then(
                 (result) => {
                     setItems(result._embedded.vocabs);
-                    let tmpMeanings = [];
-                    for (let vocab of result._embedded.vocabs) {
-                        tmpMeanings.push(vocab.meaning);
-                    }
-                    setMeanings(tmpMeanings);
                     setIsLoaded(true);
                 },
                 (error) => {
@@ -36,7 +34,7 @@ function HSKQuiz(props) {
                     setIsLoaded(true);
                 }
             )
-    }, [level]);
+    }, [level, isCumulative]);
 
     // useEffect(() => {
     //     console.log("meanings: ", meanings);
@@ -56,7 +54,8 @@ function HSKQuiz(props) {
             <QuizForm vocabs={items}
                       level={level}
                       handleLevelChange={handleLevelChange}
-                      meanings={meanings}
+                      isCumulative={isCumulative}
+                      setCumulative={setCumulative}
             />
         );
     }
