@@ -24,8 +24,8 @@ import QuizOptions from "./QuizOptions";
  * and three random meanings as incorrect answers.
  * @param vocabs - an array of Vocab objects fetched from the API
  * @param numQuestions - number of questions to display
- * @param includePinyin
- * @param answerType
+ * @param includePinyin - bool to prepend pinyin to the meaning in an answer
+ * @param answerType - String of the question attribute to use as the answers
  * @returns {*}
  */
 function MakeQuestions(vocabs, includePinyin, answerType, numQuestions = 10) {
@@ -130,7 +130,7 @@ const useStyles = makeStyles({
 });
 
 export default function QuizForm(props) {
-    const { vocabs, level, handleLevelChange } = props;
+    const { vocabs, level, handleLevelChange, isCumulative, setCumulative } = props;
     const classes = useStyles();
 
     // options:
@@ -240,6 +240,8 @@ export default function QuizForm(props) {
                     <Grid item>
                         <QuizOptions
                             setNeedsReload={setNeedsReload}
+                            isCumulative={isCumulative}
+                            setCumulative={setCumulative}
                             includePinyin={includePinyin}
                             setIncludePinyin={setIncludePinyin}
                             answerType={answerType}

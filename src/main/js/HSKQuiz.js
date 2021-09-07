@@ -12,8 +12,12 @@ function HSKQuiz(props) {
     const [isLoaded, setIsLoaded] = useState(false);
     const [items, setItems] = useState([]);
 
+    const [isCumulative, setCumulative] = useState(false);
+
     useEffect(() => {
-        fetch('/api/vocabs/search/findVocabsByLevel?level=HSK' + level, {
+        fetch(isCumulative
+            ? '/api/vocabs/search/findVocabByLevelIsLessThanEqual?size=5000&level=HSK' + level
+            : '/api/vocabs/search/findVocabsByLevel?level=HSK' + level, {
             method: 'GET',
             headers: {
                 'Accept': 'application/hal+json'
@@ -30,7 +34,7 @@ function HSKQuiz(props) {
                     setIsLoaded(true);
                 }
             )
-    }, [level]);
+    }, [level, isCumulative]);
 
     // useEffect(() => {
     //     console.log("meanings: ", meanings);
@@ -50,6 +54,8 @@ function HSKQuiz(props) {
             <QuizForm vocabs={items}
                       level={level}
                       handleLevelChange={handleLevelChange}
+                      isCumulative={isCumulative}
+                      setCumulative={setCumulative}
             />
         );
     }

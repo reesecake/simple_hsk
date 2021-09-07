@@ -32,10 +32,7 @@ const useStyles = makeStyles({
 
 function SimpleDialog(props) {
     const classes = useStyles();
-    const { onClose, open, setNeedsReload, includePinyin, setIncludePinyin, answerType, setAnswerType } = props;
-
-    const [isCumulative, setCumulative] = useState(false);
-
+    const { onClose, open, isCumulative, setCumulative, setNeedsReload, includePinyin, setIncludePinyin, answerType, setAnswerType } = props;
 
     const handleClose = () => {
         onClose();
@@ -96,7 +93,7 @@ SimpleDialog.propTypes = {
 };
 
 export default function QuizOptions(props) {
-    const { setNeedsReload, includePinyin, setIncludePinyin, answerType, setAnswerType } = props;
+    const { setNeedsReload, isCumulative, setCumulative, includePinyin, setIncludePinyin, answerType, setAnswerType } = props;
 
     const [open, setOpen] = React.useState(false);
 
@@ -119,6 +116,8 @@ export default function QuizOptions(props) {
                 open={open}
                 onClose={handleClose}
                 setNeedsReload={setNeedsReload}
+                isCumulative={isCumulative}
+                setCumulative={setCumulative}
                 includePinyin={includePinyin}
                 setIncludePinyin={setIncludePinyin}
                 answerType={answerType}
