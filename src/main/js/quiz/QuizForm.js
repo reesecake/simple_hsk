@@ -55,7 +55,7 @@ function MakeQuestions(vocabs, includePinyin, answerType, numQuestions = 10) {
         }
         return {
             ...ques,
-            meaning: includePinyin ? [ques.pinyin + " - " + ques.meaning] : [ques.meaning],
+            meaning: includePinyin ? ques.pinyin + " - " + ques.meaning : ques.meaning,
             answers: _.shuffle(answers),
         };
     });
