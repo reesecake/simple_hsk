@@ -77,7 +77,7 @@ export default function Question(props) {
             </FormLabel>
             <RadioGroup aria-label="quiz" name="quiz" value={values[question.id] || ""} onChange={handleAnswerRadioChange}>
                 {question.answers.map((option) => (
-                    <FormControlLabel key={question[questionType] + ": " + option}
+                    <FormControlLabel key={question.id + ": " + option}
                                       value={option}
                                       control={<Radio />}
                                       label={option}

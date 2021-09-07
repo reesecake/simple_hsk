@@ -43,7 +43,7 @@ function MakeQuestions(vocabs, includePinyin, answerType, numQuestions = 10) {
             default:
                 answers = [ques[answerType]];
         }
-        let sampleMeanings = _.sample(vocabs, 3);
+        let sampleMeanings = _.sample(vocabs.filter(vocab => vocab.id !== ques.id), 3);
         for (const sampleMeaning of sampleMeanings) {
             switch (answerType) {
                 case "meaning":
@@ -274,8 +274,8 @@ export default function QuizForm(props) {
                         {questions.map((question, index) => (
                             <Grid container item xs={12} direction={"row"} justifyContent={"flex-start"} alignItems={"flex-start"}
                                   key={index}>
-                                <div key={index} style={{"marginTop": "24px"}}>{index + 1}.</div>
-                                <Question key={question.id}
+                                <div key={index + question.wordSimplified} style={{"marginTop": "24px"}}>{index + 1}.</div>
+                                <Question key={index + question.wordSimplified + question.id}
                                           question={question}
                                           answerType={answerType}
                                           values={values}
