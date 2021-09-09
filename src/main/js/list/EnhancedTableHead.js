@@ -1,4 +1,4 @@
-import {Divider, Grid, TableHead, TableSortLabel} from "@material-ui/core";
+import {Divider, Grid, TableHead, TableSortLabel, Typography} from "@material-ui/core";
 import TableHeadActions from "./TableHeadActions";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
@@ -9,6 +9,10 @@ import ColumnMenu from "./ColumnMenu";
 import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
+    headerRow: {
+        height: "81px",
+        alignContent: "center",
+    },
     visuallyHidden: {
         border: 0,
         clip: 'rect(0 0 0 0)',
@@ -25,14 +29,19 @@ const useStyles = makeStyles((theme) => ({
     },
     id: {
         fontSize: '1.0rem',
+        width: "50px",
     },
     pinyinNumbered: {
         fontSize: '1.0rem',
     },
+    level: {
+        fontSize: '1.0rem',
+        width: "100px",
+    },
 }));
 
 const headCells = [
-    { id: 'id', numeric: true, disablePadding: false, label: 'id' },
+    { id: 'id', numeric: false, disablePadding: false, label: 'id' },
     { id: 'wordSimplified', numeric: false, disablePadding: false, label: 'Word (Simplified)' },
     { id: 'wordTraditional', numeric: false, disablePadding: false, label: 'Word (Traditional)' },
     { id: 'pinyin', numeric: false, disablePadding: false, label: 'pinyin' },
@@ -69,7 +78,7 @@ export default function EnhancedTableHead(props) {
                 handleChangePage={handleChangePage}
                 handleChangeRowsPerPage={handleChangeRowsPerPage}
             />
-            <TableRow>
+            <TableRow className={classes.headerRow}>
                 {headCells.map((headCell) => (
                     columnVisibility[headCell.id] &&
                             <TableCell
@@ -80,18 +89,20 @@ export default function EnhancedTableHead(props) {
                                 className={classes[headCell.id] || classes.tableCell}
                             >
                                 <Grid container justifyContent={"space-between"}>
-                                    <TableSortLabel
-                                        active={orderBy === headCell.id}
-                                        direction={orderBy === headCell.id ? order : 'asc'}
-                                        onClick={createSortHandler(headCell.id)}
-                                    >
-                                        {headCell.label}
-                                        {orderBy === headCell.id ? (
-                                            <span className={classes.visuallyHidden}>
-                                        {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                    </span>
-                                        ) : null}
-                                    </TableSortLabel>
+                                    <Grid item xs zeroMinWidth>
+                                        <TableSortLabel
+                                            active={orderBy === headCell.id}
+                                            direction={orderBy === headCell.id ? order : 'asc'}
+                                            onClick={createSortHandler(headCell.id)}
+                                        >
+                                            {headCell.label}
+                                            {orderBy === headCell.id ? (
+                                                <span className={classes.visuallyHidden}>
+                                            {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                        </span>
+                                            ) : null}
+                                        </TableSortLabel>
+                                    </Grid>
                                     <div style={{"display": "flex"}}>
                                         <HeadMenu colId={headCell.id}
                                                   columnVisibility={columnVisibility}

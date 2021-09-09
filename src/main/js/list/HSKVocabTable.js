@@ -156,7 +156,7 @@ export default function HSKVocabTable(props) {
 
                                 return (
                                     <TableRow key={row.id}>
-                                        {columnVisibility['id'] && <TableCell style={{fontSize: "1.0rem"}}>{row.id}</TableCell>}
+                                        {columnVisibility['id'] && <TableCell size={"small"} style={{fontSize: "1.0rem", width: "min-content"}}>{row.id}</TableCell>}
                                         <TableCell component="th" id={labelId} scope="row" className={classes.tableCell}>
                                             {row.wordSimplified}
                                         </TableCell>
