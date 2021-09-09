@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function HeadMenu() {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const anchorRef = React.useRef(null);
 
     const handleToggle = () => {
@@ -41,7 +41,7 @@ export default function HeadMenu() {
 
     // return focus to the button when we transitioned from !open -> open
     const prevOpen = React.useRef(open);
-    React.useEffect(() => {
+    useEffect(() => {
         if (prevOpen.current === true && open === false) {
             anchorRef.current.focus();
         }
@@ -71,9 +71,8 @@ export default function HeadMenu() {
                         <Paper>
                             <ClickAwayListener onClickAway={handleClose}>
                                 <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                                    <MenuItem onClick={handleClose}>My account</MenuItem>
-                                    <MenuItem onClick={handleClose}>Logout</MenuItem>
+                                    <MenuItem onClick={handleClose}>Hide</MenuItem>
+                                    <MenuItem onClick={handleClose}>Show Columns</MenuItem>
                                 </MenuList>
                             </ClickAwayListener>
                         </Paper>

@@ -1,6 +1,6 @@
 const ReactDOM = require('react-dom');
-const client = require('./client');
-const follow = require('./follow')
+const client = require('./api/client');
+const follow = require('./api/follow')
 import React, { useState, useEffect } from 'react';
 
 const root  = '/api';
