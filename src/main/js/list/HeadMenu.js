@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function HeadMenu() {
+export default function HeadMenu(props) {
+    const { colId, columnVisibility, setColumnVisibility, handleColMenuToggle } = props;
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const anchorRef = React.useRef(null);
@@ -30,6 +31,13 @@ export default function HeadMenu() {
         }
 
         setOpen(false);
+    };
+
+    const handleHideCol = (event) => {
+        setColumnVisibility({
+            ...columnVisibility,
+            [colId]: false,
+        });
     };
 
     function handleListKeyDown(event) {
@@ -71,8 +79,10 @@ export default function HeadMenu() {
                         <Paper>
                             <ClickAwayListener onClickAway={handleClose}>
                                 <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                                    <MenuItem onClick={handleClose}>Hide</MenuItem>
-                                    <MenuItem onClick={handleClose}>Show Columns</MenuItem>
+                                    <MenuItem onClick={handleHideCol}>Hide</MenuItem>
+                                    <MenuItem onClick={e => { handleClose(e);  handleColMenuToggle() }}>
+                                        Show Columns
+                                    </MenuItem>
                                 </MenuList>
                             </ClickAwayListener>
                         </Paper>

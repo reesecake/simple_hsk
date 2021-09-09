@@ -4,23 +4,62 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import HeadMenu from "./HeadMenu";
 import PropTypes from "prop-types";
-import React from "react";
+import React, {useRef, useState} from "react";
+import ColumnMenu from "./ColumnMenu";
+import {makeStyles} from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+    visuallyHidden: {
+        border: 0,
+        clip: 'rect(0 0 0 0)',
+        height: 1,
+        margin: -1,
+        overflow: 'hidden',
+        padding: 0,
+        position: 'absolute',
+        top: 20,
+        width: 1,
+    },
+    tableCell: {
+        fontSize: '1.2rem',
+    },
+    id: {
+        fontSize: '1.0rem',
+    },
+    pinyinNumbered: {
+        fontSize: '1.0rem',
+    },
+}));
 
 const headCells = [
+    { id: 'id', numeric: true, disablePadding: false, label: 'id' },
     { id: 'wordSimplified', numeric: false, disablePadding: false, label: 'Word (Simplified)' },
+    { id: 'wordTraditional', numeric: false, disablePadding: false, label: 'Word (Traditional)' },
     { id: 'pinyin', numeric: false, disablePadding: false, label: 'pinyin' },
+    { id: 'pinyinNumbered', numeric: false, disablePadding: false, label: 'pinyin (numbered)' },
     { id: 'meaning', numeric: false, disablePadding: false, label: 'Meaning' },
     { id: 'level', numeric: true, disablePadding: false, label: 'Level' },
 ];
 
 export default function EnhancedTableHead(props) {
-    const { classes, order, orderBy, onRequestSort, isCumulative, handleCumulativeChange, rowCount,  rowsPerPage, page, handleChangePage, handleChangeRowsPerPage } = props;
+    const { order, orderBy, onRequestSort,
+        isCumulative, handleCumulativeChange, rowCount,  rowsPerPage, page, handleChangePage, handleChangeRowsPerPage,
+        columnVisibility, setColumnVisibility } = props;
+    const classes = useStyles();
+
+    const [openColMenu, setOpenColMenu] = useState(false);
+    const anchorRef = useRef(null);
+
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
 
+    const handleColMenuToggle = () => {
+        setOpenColMenu((prevOpen) => !prevOpen);
+    };
+
     return (
-        <TableHead>
+        <TableHead ref={anchorRef} aria-controls={open ? 'menu-list-grow' : undefined}>
             <TableHeadActions
                 isCumulative={isCumulative}
                 handleCumulativeChange={handleCumulativeChange}
@@ -32,40 +71,51 @@ export default function EnhancedTableHead(props) {
             />
             <TableRow>
                 {headCells.map((headCell) => (
-                    <TableCell
-                        key={headCell.id}
-                        align={headCell.numeric ? 'right' : 'left'}
-                        padding={headCell.disablePadding ? 'none' : 'normal'}
-                        sortDirection={orderBy === headCell.id ? order : false}
-                        className={classes.tableCell}
-                    >
-                        <Grid container justifyContent={"space-between"}>
-                            <TableSortLabel
-                                active={orderBy === headCell.id}
-                                direction={orderBy === headCell.id ? order : 'asc'}
-                                onClick={createSortHandler(headCell.id)}
+                    columnVisibility[headCell.id] &&
+                            <TableCell
+                                key={headCell.id}
+                                align={headCell.numeric ? 'right' : 'left'}
+                                padding={headCell.disablePadding ? 'none' : 'normal'}
+                                sortDirection={orderBy === headCell.id ? order : false}
+                                className={classes[headCell.id] || classes.tableCell}
                             >
-                                {headCell.label}
-                                {orderBy === headCell.id ? (
-                                    <span className={classes.visuallyHidden}>
+                                <Grid container justifyContent={"space-between"}>
+                                    <TableSortLabel
+                                        active={orderBy === headCell.id}
+                                        direction={orderBy === headCell.id ? order : 'asc'}
+                                        onClick={createSortHandler(headCell.id)}
+                                    >
+                                        {headCell.label}
+                                        {orderBy === headCell.id ? (
+                                            <span className={classes.visuallyHidden}>
                                         {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                                     </span>
-                                ) : null}
-                            </TableSortLabel>
-                            <div style={{"display": "flex"}}>
-                                <HeadMenu />
-                                <Divider orientation="vertical" flexItem />
-                            </div>
-                        </Grid>
-                    </TableCell>
+                                        ) : null}
+                                    </TableSortLabel>
+                                    <div style={{"display": "flex"}}>
+                                        <HeadMenu colId={headCell.id}
+                                                  columnVisibility={columnVisibility}
+                                                  setColumnVisibility={setColumnVisibility}
+                                                  handleColMenuToggle={handleColMenuToggle}
+                                        />
+                                        <Divider light orientation="vertical" flexItem/>
+                                    </div>
+                                </Grid>
+                            </TableCell>
                 ))}
             </TableRow>
+            <ColumnMenu open={openColMenu}
+                        setOpen={setOpenColMenu}
+                        anchorRef={anchorRef}
+                        headCells={headCells}
+                        columnVisibility={columnVisibility}
+                        setColumnVisibility={setColumnVisibility}
+            />
         </TableHead>
     );
 }
 
 EnhancedTableHead.propTypes = {
-    classes: PropTypes.object.isRequired,
     onRequestSort: PropTypes.func.isRequired,
     order: PropTypes.oneOf(['asc', 'desc']).isRequired,
     orderBy: PropTypes.string.isRequired,

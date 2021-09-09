@@ -47,7 +47,7 @@ function stableSort(array, comparator) {
     return stabilizedThis.map((el) => el[0]);
 }
 
-const columnVisibility = {
+const columnVisibilityInit = {
     id: false,
     wordSimplified: true,
     wordTraditional: false,
@@ -96,6 +96,8 @@ export default function HSKVocabTable(props) {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
+    const [columnVisibility, setColumnVisibility] = useState(columnVisibilityInit);
+
     useEffect(() => {
         setRowsPerPage(10);
         // console.log("rows.length after: " + rows.length);
@@ -133,7 +135,6 @@ export default function HSKVocabTable(props) {
             <TableContainer>
                 <Table className={classes.table} aria-label="custom pagination table">
                     <EnhancedTableHead
-                        classes={classes}
                         order={order}
                         orderBy={orderBy}
                         onRequestSort={handleRequestSort}
@@ -144,6 +145,8 @@ export default function HSKVocabTable(props) {
                         page={page}
                         handleChangePage={handleChangePage}
                         handleChangeRowsPerPage={handleChangeRowsPerPage}
+                        columnVisibility={columnVisibility}
+                        setColumnVisibility={setColumnVisibility}
                     />
                     <TableBody>
                         {stableSort(rows, getComparator(order, orderBy))
@@ -153,12 +156,15 @@ export default function HSKVocabTable(props) {
 
                                 return (
                                     <TableRow key={row.id}>
+                                        {columnVisibility['id'] && <TableCell style={{fontSize: "1.0rem"}}>{row.id}</TableCell>}
                                         <TableCell component="th" id={labelId} scope="row" className={classes.tableCell}>
                                             {row.wordSimplified}
                                         </TableCell>
-                                        <TableCell style={{fontSize: "1.0rem"}}>{row.pinyin}</TableCell>
-                                        <TableCell style={{fontSize: "1.0rem"}}>{row.meaning}</TableCell>
-                                        <TableCell style={{fontSize: "1.0rem"}} align="right">{row.level}</TableCell>
+                                        {columnVisibility['wordTraditional'] && <TableCell style={{fontSize: "1.2rem"}}>{row.wordTraditional}</TableCell>}
+                                        {columnVisibility['pinyin'] && <TableCell style={{fontSize: "1.0rem"}}>{row.pinyin}</TableCell>}
+                                        {columnVisibility['pinyinNumbered'] && <TableCell style={{fontSize: "1.0rem"}}>{row.pinyinNumbered}</TableCell>}
+                                        {columnVisibility['meaning'] && <TableCell style={{fontSize: "1.0rem"}}>{row.meaning}</TableCell>}
+                                        {columnVisibility['level'] && <TableCell style={{fontSize: "1.0rem"}} align="right">{row.level}</TableCell>}
                                     </TableRow>
                                 );
                             })}
