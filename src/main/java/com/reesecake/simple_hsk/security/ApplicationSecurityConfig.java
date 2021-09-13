@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 //import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
@@ -33,10 +35,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     // Permitted to all
-                    .antMatchers("/built/**", "/main.css").permitAll()
-                    .antMatchers("/", "/about", "/hsk/*", "/quiz").permitAll()
+                    .antMatchers("/built/**", "/css/**", "/assets/**").permitAll()
+                    .antMatchers("/", "/about", "/hsk/*", "/vocab-lists", "/quiz").permitAll()
                     // Role-based authentication
-                    .antMatchers("/api/**").hasRole(ADMIN.name())
+//                    .antMatchers("/api/**").hasRole(ADMIN.name())
+                    .antMatchers(HttpMethod.GET, "/api/vocabs/**").permitAll()
+//                    .antMatchers(HttpMethod.POST, "/api/vocabs/**").permitAll()
+                    .antMatchers(HttpMethod.POST, "/api/vocabs/search").permitAll()
                     // TODO: Permission-based authentication?
                     .anyRequest().authenticated()
                     .and()
@@ -69,5 +74,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 nathanMohapatraUser
         );
     }
+
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers(HttpMethod.POST, "/**");
+//    }
 
 }
