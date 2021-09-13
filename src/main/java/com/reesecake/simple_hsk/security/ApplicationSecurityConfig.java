@@ -47,9 +47,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 // Form-based authentication
                 .formLogin()
+                    .loginPage("/login").permitAll()
+                    .defaultSuccessUrl("/", true)
                     .and()
-                // CSRF enabled
-                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+                .csrf().disable(); // enabling breaks login
     }
 
     @Override
