@@ -157,9 +157,10 @@ export default function HSKVocabTable(props) {
                                 return (
                                     <TableRow key={row.id}>
                                         {columnVisibility['id'] && <TableCell size={"small"} style={{fontSize: "1.0rem", width: "min-content"}}>{row.id}</TableCell>}
+                                        {columnVisibility['wordSimplified'] &&
                                         <TableCell component="th" id={labelId} scope="row" className={classes.tableCell}>
                                             {row.wordSimplified}
-                                        </TableCell>
+                                        </TableCell>}
                                         {columnVisibility['wordTraditional'] && <TableCell style={{fontSize: "1.2rem"}}>{row.wordTraditional}</TableCell>}
                                         {columnVisibility['pinyin'] && <TableCell style={{fontSize: "1.0rem"}}>{row.pinyin}</TableCell>}
                                         {columnVisibility['pinyinNumbered'] && <TableCell style={{fontSize: "1.0rem"}}>{row.pinyinNumbered}</TableCell>}
@@ -178,7 +179,7 @@ export default function HSKVocabTable(props) {
                         <TableRow>
                             <TablePagination
                                 rowsPerPageOptions={[10, 25, 50, 100, 500, 1000, { label: 'All', value: rows.length }]}
-                                colSpan={4}
+                                colSpan={Object.values(columnVisibility).reduce((a, item) => a + item, 0)}
                                 count={rows.length}
                                 rowsPerPage={rowsPerPage}
                                 page={page}

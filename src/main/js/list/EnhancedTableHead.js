@@ -77,6 +77,7 @@ export default function EnhancedTableHead(props) {
                 page={page}
                 handleChangePage={handleChangePage}
                 handleChangeRowsPerPage={handleChangeRowsPerPage}
+                columnVisibility={columnVisibility}
             />
             <TableRow className={classes.headerRow}>
                 {headCells.map((headCell) => (

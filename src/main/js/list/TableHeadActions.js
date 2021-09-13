@@ -5,7 +5,7 @@ import TablePaginationActions from "./TablePaginationActions";
 import React from "react";
 
 export default function TableHeadActions(props) {
-    const { isCumulative, handleCumulativeChange, rowCount, rowsPerPage, page, handleChangePage, handleChangeRowsPerPage } = props;
+    const { isCumulative, handleCumulativeChange, rowCount, rowsPerPage, page, handleChangePage, handleChangeRowsPerPage, columnVisibility } = props;
 
     return (
         <TableRow>
@@ -21,7 +21,7 @@ export default function TableHeadActions(props) {
 
             <TablePagination
                 rowsPerPageOptions={[10, 25, 50, 100, 500, 1000, { label: 'All', value: rowCount }]}
-                colSpan={4}
+                colSpan={Object.values(columnVisibility).reduce((a, item) => a + item, 0)}
                 count={rowCount}
                 rowsPerPage={rowsPerPage}
                 page={page}
