@@ -58,6 +58,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(7))
                     .key("uniqueAndSecret")
                     .and()
+                .logout()
+                    .logoutUrl("/logout")
+                    .clearAuthentication(true)
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "remember-me")
+                    .logoutSuccessUrl("/login")
+                    .and()
                 .csrf().disable(); // Enabling breaks login
     }
 
