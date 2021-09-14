@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.reesecake.simple_hsk.security.ApplicationUserRole.*;
 
 @Configuration
@@ -47,10 +49,16 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 // Form-based authentication
                 .formLogin()
+                    // Custom login page
                     .loginPage("/login").permitAll()
                     .defaultSuccessUrl("/", true)
                     .and()
-                .csrf().disable(); // enabling breaks login
+                .rememberMe() // Defaults to 2 weeks
+                    // Custom expiration time
+                    .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(7))
+                    .key("uniqueAndSecret")
+                    .and()
+                .csrf().disable(); // Enabling breaks login
     }
 
     @Override
