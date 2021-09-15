@@ -21,6 +21,11 @@ const useStyles = value => makeStyles((theme) => ({
         marginLeft: "24px",
         fontSize: "1.2rem",
     },
+    radioLabel: {
+        '& .MuiFormControlLabel-label.Mui-disabled': {
+            color: "rgba(0, 0, 0, 0.87)",
+        }
+    },
     button: {
         margin: theme.spacing(1, 1, 0, 0),
     },
@@ -55,7 +60,7 @@ const questionTypes = {
 };
 
 export default function Question(props) {
-    const { question, answerType, values, setValues, errors, helperTexts, needsReload } = props;
+    const { question, answerType, values, setValues, errors, helperTexts, needsReload, isSubmitted } = props;
     const classes = useStyles(helperTexts[question.id])();
 
     const [questionType, setQuestionType] = useState(questionTypes[answerType]);
@@ -82,9 +87,11 @@ export default function Question(props) {
             <RadioGroup aria-label="quiz" name="quiz" value={values[question.id] || ""} onChange={handleAnswerRadioChange}>
                 {question.answers.map((option) => (
                     <FormControlLabel key={`${question.id}: ${option}`}
+                                      className={classes.radioLabel}
                                       value={option}
                                       control={<Radio />}
                                       label={option}
+                                      disabled={isSubmitted}
                     />
                 ))}
             </RadioGroup>

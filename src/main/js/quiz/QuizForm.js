@@ -140,6 +140,7 @@ export default function QuizForm(props) {
     const [values, setValues] = useState(() => { return MakeValues(questions) });
     const [errors, setErrors] = useState(() => { return MakeErrors(questions) });
     const [helperTexts, setHelperTexts] = useState(() => { return MakeHelperTexts(questions) });
+    const [isSubmitted, setIsSubmitted] = useState(false);
     clsx({
         [classes.buttonSuccess]: success,
     });
@@ -166,6 +167,7 @@ export default function QuizForm(props) {
             setLoading(true);
             setQuestions(MakeQuestions(vocabs, includePinyin, answerType, numQuestions));  // refresh for new questions
             setScore(0);  // reset score counter
+            setIsSubmitted(false);
             setNeedsReload(false);
             timer.current = window.setTimeout(() => {
                 setSuccess(true);
@@ -198,6 +200,7 @@ export default function QuizForm(props) {
         setErrors(results);
         setHelperTexts(tmpHelperTexts);
         setScore(tmpScore);
+        setIsSubmitted(true);
     };
 
     return (
@@ -270,11 +273,12 @@ export default function QuizForm(props) {
                                           errors={errors}
                                           helperTexts={helperTexts}
                                           needsReload={needsReload}
+                                          isSubmitted={isSubmitted}
                                 />
                             </Grid>
                         ))}
 
-                        <Button type="submit" variant="outlined" color="primary" className="submitQuiz">
+                        <Button type="submit" variant="outlined" color="primary" className="submitQuiz" disabled={isSubmitted}>
                             Check Answers
                         </Button>
                     </form>
