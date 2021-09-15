@@ -50,7 +50,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Form-based authentication
                 .formLogin()
                     // Custom login page
-                    .loginPage("/login").permitAll()
+                    .loginPage("/auth/login").permitAll()
                     .defaultSuccessUrl("/", true)
                     .and()
                 .rememberMe() // Defaults to 2 weeks
@@ -59,11 +59,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .key("uniqueAndSecret")
                     .and()
                 .logout()
-                    .logoutUrl("/logout")
+                    .logoutUrl("/auth/logout")
                     .clearAuthentication(true)
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID", "remember-me")
-                    .logoutSuccessUrl("/login")
+                    .logoutSuccessUrl("/auth/login")
                     .and()
                 .csrf().disable(); // Enabling breaks login
     }
