@@ -30,7 +30,7 @@ export default function RegisterForm() {
 
             <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
             <p className="forgot-password text-right">
-                Already registered? <Link to={"/auth/login"} replace>Sign-in</Link>
+                Already registered? <Link to={"/login"} replace>Sign-in</Link>
             </p>
         </form>
     );

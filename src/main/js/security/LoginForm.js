@@ -29,7 +29,7 @@ export default function LoginForm() {
 
             <button type="submit" className="btn btn-primary btn-block">Submit</button>
             <p className="forgot-password text-right">
-                Don't have an account? <Link to={"/auth/register"} replace>Sign-up</Link>
+                Don't have an account? <Link to={"/register"} replace>Sign-up</Link>
             </p>
         </form>
     );
