@@ -5,6 +5,7 @@ module.exports = {
         app: './src/main/js/app.js',
         hsk: './src/main/js/HSKList.js',
         quiz: './src/main/js/HSKQuiz.js',
+        login: './src/main/js/security/Login.js',
     },
     devtool: 'sourcemaps',
     cache: true,
