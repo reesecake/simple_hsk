@@ -37,12 +37,22 @@
         <a href="/quiz" class="btn btn-outline-primary" role="button">Quiz now</a>
     </div>
 
+    <hr>
+
+    <!-- tag::logout[] -->
+    <div>
+        Hello, <span id="username" th:text="${#authentication.name}">user</span>.
+    </div>
+    <!-- end::logout[] -->
+
+    <div id="react-welcome" th:authentication="${#authentication}"></div>
+
 </div>
 
 <div th:replace="fragments/footer.html :: footer"></div>
 
 <!-- Custom Scripts-->
-<!--<script src="built/app.js"></script>-->
+<script src="built/welcomesplash.js"></script>
 
 <!--Navbar w/ dropdown-->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

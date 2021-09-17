@@ -1,5 +1,7 @@
 package com.reesecake.simple_hsk.security;
 
+import com.reesecake.simple_hsk.security.alternative.Admin;
+import com.reesecake.simple_hsk.security.alternative.SpringDataJpaUserDetailsService;
 import com.reesecake.simple_hsk.security.auth.ApplicationUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,11 +23,13 @@ import static com.reesecake.simple_hsk.security.ApplicationUserRole.*;
 
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true) // @PreAuthorize and @PostAuthorize
+//@EnableGlobalMethodSecurity(prePostEnabled = true) // @PreAuthorize and @PostAuthorize annotations enabled
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
     private final ApplicationUserService applicationUserService;
+    @Autowired
+    private SpringDataJpaUserDetailsService userDetailsService;
 
     @Autowired
     public ApplicationSecurityConfig(PasswordEncoder passwordEncoder,
@@ -66,11 +70,15 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .logoutSuccessUrl("/auth/login")
                     .and()
                 .csrf().disable(); // Enabling breaks login
+//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(daoAuthenticationProvider());
+        auth
+                .authenticationProvider(daoAuthenticationProvider())
+                .userDetailsService(this.userDetailsService)
+                .passwordEncoder(Admin.PASSWORD_ENCODER);
     }
 
     @Bean

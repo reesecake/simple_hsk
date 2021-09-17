@@ -1,27 +1,34 @@
-//package com.reesecake.simple_hsk;
-//
-//import com.reesecake.simple_hsk.vocab.Vocab;
-//import com.reesecake.simple_hsk.vocab.VocabRepository;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.CommandLineRunner;
-//import org.springframework.stereotype.Component;
-//
-//@Component
-//public class DatabaseLoader implements CommandLineRunner {
-//
-//    private static final Logger log = LoggerFactory.getLogger(DatabaseLoader.class);
-//
-//    private final VocabRepository vocabRepository;
-//
-//    @Autowired
-//    public DatabaseLoader(VocabRepository vocabRepository) {
-//        this.vocabRepository = vocabRepository;
-//    }
-//
-//    @Override
-//    public void run(String... strings) throws Exception {
+package com.reesecake.simple_hsk;
+
+import com.reesecake.simple_hsk.security.alternative.Admin;
+import com.reesecake.simple_hsk.security.alternative.AdminRepository;
+import com.reesecake.simple_hsk.vocab.Vocab;
+import com.reesecake.simple_hsk.vocab.VocabRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+
+@Component
+public class DatabaseLoader implements CommandLineRunner {
+
+    private static final Logger log = LoggerFactory.getLogger(DatabaseLoader.class);
+
+    private final VocabRepository vocabRepository;
+    private final AdminRepository adminRepository;
+
+    @Autowired
+    public DatabaseLoader(VocabRepository vocabRepository, AdminRepository adminRepository) {
+        this.vocabRepository = vocabRepository;
+        this.adminRepository = adminRepository;
+    }
+
+    @Override
+    public void run(String... strings) throws Exception {
 //        this.vocabRepository.save(new Vocab("电脑", "diàn nǎo", "computer", "HSK1"));
 //        this.vocabRepository.save(new Vocab("电视", "diàn shì", "TV", "HSK1"));
 //        this.vocabRepository.save(new Vocab("宾馆", "bīn guǎn", "hotel", "HSK2"));
@@ -35,5 +42,14 @@
 //        this.vocabRepository.save(new Vocab("棒", "bàng", "a stick / club or cudgel / smart / capable / strong / wonderful / classifier for legs of a relay race", "HSK4"));
 //        this.vocabRepository.save(new Vocab("塑料袋", "sù liào dài", "plastic bag", "HSK4"));
 //        this.vocabRepository.findAll().forEach(vocab -> log.info("Preloaded " + vocab));
-//    }
-//}
+
+//        Admin reese = this.adminRepository.save(new Admin("reese", "lam", "ROLE_ADMIN"));
+//        Admin nathan = this.adminRepository.save(new Admin("nathan", "mohapatra", "ROLE_ADMIN"));
+
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken("reese", "helloworld",
+                        AuthorityUtils.createAuthorityList("ROLE_ADMIN")));
+
+        SecurityContextHolder.clearContext();
+    }
+}

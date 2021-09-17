@@ -2,10 +2,11 @@ var path = require('path');
 
 module.exports = {
     entry: {
-        app: './src/main/js/app.js',
+        // app: './src/main/js/app.js',
         hsk: './src/main/js/HSKList.js',
         quiz: './src/main/js/HSKQuiz.js',
         login: './src/main/js/security/Login.js',
+        welcomesplash: './src/main/js/WelcomeSplash.js',
     },
     devtool: 'sourcemaps',
     cache: true,
