@@ -11,6 +11,7 @@ import static com.reesecake.simple_hsk.security.ApplicationUserPermission.*;
 public enum ApplicationUserRole {
     // TODO: Add permissions?
     ADMIN(Sets.newHashSet()),
+    TEACHER(Sets.newHashSet()),
     STUDENT(Sets.newHashSet());
 
     private final Set<ApplicationUserPermission> permissions;

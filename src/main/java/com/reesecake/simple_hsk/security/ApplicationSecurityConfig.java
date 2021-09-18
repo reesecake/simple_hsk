@@ -48,6 +48,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers(HttpMethod.GET, "/api/vocabs/**").permitAll()
 //                    .antMatchers(HttpMethod.POST, "/api/vocabs/**").permitAll()
                     .antMatchers(HttpMethod.POST, "/api/vocabs/search").permitAll()
+                    .antMatchers("/api/**").hasRole("ADMIN")
                     // TODO: Permission-based authentication?
                     .anyRequest().authenticated()
                     .and()
