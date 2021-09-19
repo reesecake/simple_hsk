@@ -1,0 +1,64 @@
+:root {
+    /*--primary-color: #047aed;*/
+    /*--secondary-color: #1c3fa8;*/
+    --dark-color: #002240;
+    /*--light-color: #f4f4f4;*/
+    /*--success-color: #5cb85c;*/
+    /*--error-color: #d9534f;*/
+}
+
+.container-custom {
+    max-width: 1100px;
+    margin: 0 auto;
+    overflow: auto;
+    padding: 0 40px;
+}
+
+.bg-dark,
+.btn-dark {
+    background-color: var(--dark-color);
+    color: #fff;
+}
+
+.bg-primary a,
+.btn-primary a,
+.bg-secondary a,
+.btn-secondary a,
+.bg-dark a,
+.btn-dark a {
+    color: #fff;
+}
+
+.grid-custom {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.grid-3-custom {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+/* Padding */
+.py-1 {
+    padding: 1rem 0;
+}
+
+.py-2 {
+    padding: 1.5rem 0;
+}
+
+.py-3 {
+    padding: 2rem 0;
+}
+
+.py-4 {
+    padding: 3rem 0;
+}
+
+.py-5 {
+    padding: 4rem 0;
+}

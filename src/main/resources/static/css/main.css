@@ -2,6 +2,21 @@ html {
     font-size: 100%;
 }
 
+:root {
+    --primary-color: #bc2828;
+    --secondary-color: #1c3fa8;
+    --dark-color: #002240;
+    --light-color: #f4f4f4;
+    --success-color: #5cb85c;
+    --error-color: #d9534f;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
 /*https://betterwebtype.com/articles/2019/06/16/5-keys-to-accessible-web-typography/*/
 
 /*table {*/
@@ -26,9 +41,50 @@ body {
     background-size: cover;
 }
 
-/*p {*/
-/*    max-width: 33em;*/
-/*}*/
+ul {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+h1,
+h2 {
+    font-weight: 300;
+    line-height: 1.2;
+    margin: 10px 0;
+}
+
+p {
+    margin: 10px 0;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--primary-color);
+    color: #fff;
+    height: 70px;
+}
+
+.navbar ul {
+    display: flex;
+}
+
+.navbar a {
+    color: #fff;
+    padding: 10px;
+    margin: 0 5px;
+}
+
+.navbar a:hover {
+    border-bottom: 2px #fff solid;
+}
+
+.navbar .flex {
+    justify-content: space-between;
+}
 
 .Site-footer {
     flex-shrink: 0;
@@ -68,4 +124,13 @@ body {
 
 .vocab-lists-buttons a {
     margin: 5px;
+}
+
+/* Footer */
+.footer .social a {
+    margin: 0 10px;
+}
+
+.fa-github:hover {
+    color: #000000;
 }

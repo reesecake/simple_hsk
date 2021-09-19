@@ -6,14 +6,35 @@
     <title>fragments/footer.html</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
+
+    <!--  Custom css  -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/utilities.css" th:href="@{/css/utilities.css}">
 </head>
 
 <body>
 
-<footer class="Site-footer bg-light" th:fragment="footer">
+<footer class="Site-footer bg-light" th:fragment="old-footer">
     <h3 class="footer-title"><a href="https://github.com/reesecake/simple_hsk">Check out this project on <i class="fab fa-github" style='font-size:30px'></i> GitHub</a></h3>
+</footer>
+
+<footer class="footer-custom bg-dark py-2" th:fragment="footer-main">
+    <div class="container-custom grid-custom grid-3-custom">
+        <div>
+            <h1>Simple HSK</h1>
+            <p>Copyright &copy; 2021</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+            </ul>
+        </nav>
+        <div class="social">
+            <a href="https://github.com/reesecake/simple_hsk"><i class="fab fa-github fa-2x"></i></a>
+        </div>
+    </div>
 </footer>
 
 </body>
