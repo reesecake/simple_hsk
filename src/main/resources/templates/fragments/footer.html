@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
 
     <!--  Custom css  -->
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/utilities.css" th:href="@{/css/utilities.css}">
+    <link rel="stylesheet" href="../css/main.css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" href="../css/utilities.css" th:href="@{/css/utilities.css}">
 </head>
 
 <body>
@@ -19,7 +19,7 @@
     <h3 class="footer-title"><a href="https://github.com/reesecake/simple_hsk">Check out this project on <i class="fab fa-github" style='font-size:30px'></i> GitHub</a></h3>
 </footer>
 
-<footer class="footer-custom bg-dark py-2" th:fragment="footer-main">
+<footer class="footer-custom bg-dark py-1" th:fragment="footer-main">
     <div class="container-custom grid-custom grid-3-custom">
         <div>
             <h1>Simple HSK</h1>
@@ -29,6 +29,7 @@
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/about">About</a></li>
+                <li><a href="/docs">Docs</a></li>
             </ul>
         </nav>
         <div class="social">

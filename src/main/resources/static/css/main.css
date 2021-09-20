@@ -5,7 +5,7 @@ html {
 :root {
     --primary-color: #bc2828;
     --secondary-color: #1c3fa8;
-    --dark-color: #002240;
+    --dark-color: #343a40; /* #002240; */
     --light-color: #f4f4f4;
     --success-color: #5cb85c;
     --error-color: #d9534f;
@@ -63,7 +63,7 @@ p {
 
 /* Navbar */
 .navbar {
-    background-color: var(--primary-color);
+    background-color: #ffffff;
     color: #fff;
     height: 70px;
 }
@@ -73,13 +73,13 @@ p {
 }
 
 .navbar a {
-    color: #fff;
+    color: #000000;
     padding: 10px;
     margin: 0 5px;
 }
 
 .navbar a:hover {
-    border-bottom: 2px #fff solid;
+    border-bottom: 2px #000000 solid;
 }
 
 .navbar .flex {

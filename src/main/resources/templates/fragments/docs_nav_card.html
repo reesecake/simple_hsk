@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>fragments/docs_nav_card.html</title>
+</head>
+<body>
+
+<div class="card bg-light p-3" th:fragment="docs_nav_card">
+    <h3 class="my-2">Basics</h3>
+    <nav>
+        <ul>
+            <li><a href="/docs">Introduction</a></li>
+            <li><a href="/docs/about">About Simple HSK</a></li>
+        </ul>
+    </nav>
+
+    <h3 class="my-2">Implementation</h3>
+    <nav>
+        <ul>
+            <li><a href="/docs/implementation#backend">Backend</a></li>
+            <li><a href="/docs/implementation#frontend">Frontend</a></li>
+        </ul>
+    </nav>
+
+    <h3 class="my-2">Testing</h3>
+    <nav>
+        <ul>
+            <li><a href="/docs/testing">Intro</a></li>
+            <li><a href="/docs/testing#continuous_integration">Continuous Integration</a></li>
+        </ul>
+    </nav>
+</div>
+
+</body>
+</html>

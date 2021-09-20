@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple HSK | Docs</title>
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+
+    <!--  Custom css  -->
+    <link rel="stylesheet" href="css/style.css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="css/utilities_unedited.css" th:href="@{/css/utilities_unedited.css}">
+
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="assets/favicon_io/site.webmanifest">
+</head>
+<body>
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="container flex">
+      <h1 class="logo">Simple HSK</h1>
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/docs">Docs</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Head -->
+  <section class="docs-head bg-primary py-3">
+    <div class="container grid">
+      <div>
+        <h1 class="xl">Docs</h1>
+        <p class="lead">
+          Learn how the Simple HSK platform works
+        </p>
+      </div>
+      <img src="assets/docs.png" alt="" th:src="@{/assets/docs.png}">
+    </div>
+  </section>
+
+  <!-- Docs main -->
+  <section class="docs-main my-4">
+
+    <div class="container grid">
+      <div th:replace="fragments/docs_nav_card :: docs_nav_card"></div>
+
+      <div class="card">
+        <h2>Introduction</h2>
+        <p>Welcome to the Simple HSK docs! Here you can find info on how Simple HSK is written and what is happening in the background, from the Spring Boot REST API to the React components made to provide users with a platform to practice their HSK vocabulary skills.</p>
+
+        <div class="alert alert-error">
+          <i class="fas fa-info"></i> The Simple HSK GitHub repository is not currently public and cannot be cloned/forked nor can the source code be viewed.
+        </div>
+
+        <h3>GitHub</h3>
+        <p>Simple HSK is available on GitHub and connected to CircleCI and Heroku</p>
+        <a href="https://github.com/reesecake/simple_hsk" class="btn btn-primary">See GitHub Repo</a>
+
+        <h3>Requirements</h3>
+        <ul>
+          <li>JDK 11.0 or higher</li>
+        </ul>
+
+        <h3>Install</h3>
+        <p>Get a copy of the code</p>
+        <p><a href="https://docs.github.com/en/get-started/quickstart/fork-a-repo">See more on how to do this</a></p>
+        <pre><code>$ git clone git@github.com:YOUR_USERNAME/simple_hsk.git</code></pre>
+
+        <p>Install node and npm with the <code>frontend-maven-plugin</code></p>
+        <pre><code>$ mvn install</code></pre>
+        <p>or separately</p>
+        <pre><code>$ mvn frontend:install-node-and-npm</code></pre>
+        <pre><code>$ mvn frontend:npm</code></pre>
+
+        <h3>Run</h3>
+        <p>Start the Spring Boot application</p>
+        <pre><code>$ ./mvnw spring-boot:run</code></pre>
+
+        <p>Run webpack to pack the React components</p>
+        <pre><code>$ mvn frontend:webpack</code></pre>
+
+      </div>
+    </div>
+  </section>
+
+  <link rel="stylesheet" href="css/utilities.css" th:href="@{/css/utilities.css}">
+  <div th:replace="fragments/footer :: footer-main"></div>
+</body>
+</html>

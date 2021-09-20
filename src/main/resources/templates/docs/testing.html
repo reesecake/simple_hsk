@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple HSK | Docs | Testing</title>
+    <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+
+    <!--  Custom css  -->
+    <link rel="stylesheet" href="css/style.css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="css/utilities_unedited.css" th:href="@{/css/utilities_unedited.css}">
+
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="assets/favicon_io/site.webmanifest">
+</head>
+<body>
+<!-- Navbar -->
+<div class="navbar">
+    <div class="container flex">
+        <h1 class="logo">Simple HSK</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/docs">Docs</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<!-- Head -->
+<section class="docs-head bg-primary py-3">
+    <div class="container grid">
+        <div>
+            <h1 class="xl">Docs</h1>
+            <p class="lead">
+                Learn how the Simple HSK platform works
+            </p>
+        </div>
+        <img src="assets/docs.png" alt="" th:src="@{/assets/docs.png}">
+    </div>
+</section>
+
+<!-- Docs main -->
+<section class="docs-main my-4">
+
+    <div class="container grid">
+        <div th:replace="fragments/docs_nav_card :: docs_nav_card"></div>
+
+        <div class="card">
+            <h2>Testing</h2>
+            <p>Simple HSK is tested using the standard <code>@SpringBootTest</code> annotation with the <code>test</code> Spring profile in order to use an in-memory H2 database. JaCoCo and Maven Surefire are included as dependencies for test result outputs after running <code>$ mvn test</code>.</p>
+
+            <h3 id="continuous_integration">Continuous Integration</h3>
+            <p>The application is checked by CircleCI for continuous integration when changes are made to the <code>master</code> branch. CircleCI is able to run the app's integration tests thanks to the <code>application-test.properties</code> that sets up the in-memory H2 database.</p>
+
+        </div>
+    </div>
+</section>
+
+<link rel="stylesheet" href="css/utilities.css" th:href="@{/css/utilities.css}">
+<div th:replace="fragments/footer :: footer-main"></div>
+</body>
+</html>
