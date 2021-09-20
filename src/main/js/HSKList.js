@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import CustomPaginationActionsTable from "./hsk_table";
+import HSKVocabTable from "./list/HSKVocabTable";
 import {LinearProgress} from "@material-ui/core";
 
 const ReactDOM = require('react-dom');
@@ -40,7 +40,7 @@ function HSKList(props) {
     } else {
         return (
             <div>
-                <CustomPaginationActionsTable vocabs={items} level={props.level}/>
+                <HSKVocabTable vocabs={items} level={props.level}/>
             </div>
         );
     }
