@@ -17,7 +17,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-public class Admin {
+public class AppUser {
 
     public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
@@ -32,9 +32,9 @@ public class Admin {
         this.password = PASSWORD_ENCODER.encode(password);
     }
 
-    protected Admin() {}
+    protected AppUser() {}
 
-    public Admin(String name, String password, String... roles) {
+    public AppUser(String name, String password, String... roles) {
 
         this.name = name;
         this.setPassword(password);
@@ -45,11 +45,11 @@ public class Admin {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Admin manager = (Admin) o;
-        return Objects.equals(id, manager.id) &&
-                Objects.equals(name, manager.name) &&
-                Objects.equals(password, manager.password) &&
-                Arrays.equals(roles, manager.roles);
+        AppUser appUser = (AppUser) o;
+        return Objects.equals(id, appUser.id) &&
+                Objects.equals(name, appUser.name) &&
+                Objects.equals(password, appUser.password) &&
+                Arrays.equals(roles, appUser.roles);
     }
 
     @Override

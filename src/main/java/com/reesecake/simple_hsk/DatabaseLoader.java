@@ -1,8 +1,7 @@
 package com.reesecake.simple_hsk;
 
-import com.reesecake.simple_hsk.security.alternative.Admin;
-import com.reesecake.simple_hsk.security.alternative.AdminRepository;
-import com.reesecake.simple_hsk.vocab.Vocab;
+import com.reesecake.simple_hsk.security.alternative.AppUser;
+import com.reesecake.simple_hsk.security.alternative.AppUserRepository;
 import com.reesecake.simple_hsk.vocab.VocabRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +18,12 @@ public class DatabaseLoader implements CommandLineRunner {
     private static final Logger log = LoggerFactory.getLogger(DatabaseLoader.class);
 
     private final VocabRepository vocabRepository;
-    private final AdminRepository adminRepository;
+    private final AppUserRepository appUserRepository;
 
     @Autowired
-    public DatabaseLoader(VocabRepository vocabRepository, AdminRepository adminRepository) {
+    public DatabaseLoader(VocabRepository vocabRepository, AppUserRepository appUserRepository) {
         this.vocabRepository = vocabRepository;
-        this.adminRepository = adminRepository;
+        this.appUserRepository = appUserRepository;
     }
 
     @Override
@@ -43,8 +42,10 @@ public class DatabaseLoader implements CommandLineRunner {
 //        this.vocabRepository.save(new Vocab("塑料袋", "sù liào dài", "plastic bag", "HSK4"));
 //        this.vocabRepository.findAll().forEach(vocab -> log.info("Preloaded " + vocab));
 
-//        Admin reese = this.adminRepository.save(new Admin("reese", "lam", "ROLE_ADMIN"));
-//        Admin nathan = this.adminRepository.save(new Admin("nathan", "mohapatra", "ROLE_ADMIN"));
+//        AppUser reese = this.appUserRepository.save(new AppUser("reese", "lam", "ROLE_ADMIN"));
+//        AppUser nathan = this.appUserRepository.save(new AppUser("nathan", "mohapatra", "ROLE_ADMIN"));
+//        AppUser bigGao = this.appUserRepository.save(new AppUser("gao", "password", "ROLE_TEACHER"));
+//        AppUser littleWang = this.appUserRepository.save(new AppUser("wang", "password", "ROLE_STUDENT"));
 
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken("reese", "helloworld",
