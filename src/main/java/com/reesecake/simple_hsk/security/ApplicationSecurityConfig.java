@@ -36,12 +36,14 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers("/built/**", "/css/**", "/assets/**").permitAll()
-                    .antMatchers("/", "/about", "/hsk/*", "/vocab-lists", "/quiz").permitAll()
+                    .antMatchers("/", "/about", "/hsk/*", "/vocab-lists", "/quiz", "/api/appUsers", "/auth/**").permitAll()
 //                    .antMatchers("/api/**").hasRole(ADMIN.name())
+                    .antMatchers("/api/**").hasRole("ADMIN")
                     .antMatchers(HttpMethod.GET, "/api/vocabs/**").permitAll()
 //                    .antMatchers(HttpMethod.POST, "/api/vocabs/**").permitAll()
                     .antMatchers(HttpMethod.POST, "/api/vocabs/search").permitAll()
-                    .antMatchers("/api/**").hasRole("ADMIN")
+                    .antMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                    .antMatchers(HttpMethod.POST, "/api/appUsers").permitAll()
                     // TODO: Permission-based authentication?
                     .anyRequest().authenticated()
                     .and()

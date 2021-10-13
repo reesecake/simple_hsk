@@ -49,7 +49,7 @@ public class DatabaseLoader implements CommandLineRunner {
 
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken("reese", "helloworld",
-                        AuthorityUtils.createAuthorityList("ROLE_ADMIN")));
+                        AuthorityUtils.createAuthorityList("ROLE_ADMIN", "ROLE_TEACHER", "ROLE_STUDENT")));
 
         SecurityContextHolder.clearContext();
     }
