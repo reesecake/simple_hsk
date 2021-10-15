@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -22,7 +23,11 @@ public class AppUser {
     public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     private @Id @GeneratedValue Long id;
+    @Column(nullable = false, unique = true)
     private String username;
+    @Column(nullable = false, unique = true)
+    private String email;
+    @Column(nullable = false)
     private @JsonIgnore
     String password;
 
@@ -34,9 +39,10 @@ public class AppUser {
 
     protected AppUser() {}
 
-    public AppUser(String username, String password, String... roles) {
+    public AppUser(String username, String email, String password, String... roles) {
 
         this.username = username;
+        this.email = email;
         this.setPassword(password);
         this.roles = roles;
     }

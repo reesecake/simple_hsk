@@ -42,16 +42,16 @@ public class DatabaseLoader implements CommandLineRunner {
 //        this.vocabRepository.save(new Vocab("塑料袋", "sù liào dài", "plastic bag", "HSK4"));
 //        this.vocabRepository.findAll().forEach(vocab -> log.info("Preloaded " + vocab));
 
-//        AppUser reese = this.appUserRepository.save(new AppUser("reese", "lam", "ROLE_ADMIN"));
-//        AppUser nathan = this.appUserRepository.save(new AppUser("nathan", "mohapatra", "ROLE_ADMIN"));
-//        AppUser bigGao = this.appUserRepository.save(new AppUser("gao", "password", "ROLE_TEACHER"));
-//        AppUser littleWang = this.appUserRepository.save(new AppUser("wang", "password", "ROLE_STUDENT"));
+//        AppUser reese = this.appUserRepository.save(new AppUser("reese", "rlam2017@gmail.com", "lam", "ROLE_ADMIN"));
+//        AppUser nathan = this.appUserRepository.save(new AppUser("nathan", "nathan@simplehsk.com", "mohapatra", "ROLE_ADMIN"));
+//        AppUser bigGao = this.appUserRepository.save(new AppUser("gao", "sample1@simplehsk.com", "password", "ROLE_TEACHER"));
+//        AppUser littleWang = this.appUserRepository.save(new AppUser("wang", "sample2@simplehsk.com", "password", "ROLE_STUDENT"));
 
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken("reese", "helloworld",
                         AuthorityUtils.createAuthorityList("ROLE_ADMIN", "ROLE_TEACHER", "ROLE_STUDENT")));
 
-        this.appUserRepository.findAll().forEach(appUser -> log.info("Preloaded " + appUser.getUsername()));
+//        this.appUserRepository.findAll().forEach(appUser -> log.info("Preloaded " + appUser.getUsername()));
 
         SecurityContextHolder.clearContext();
     }
