@@ -51,6 +51,8 @@ public class DatabaseLoader implements CommandLineRunner {
                 new UsernamePasswordAuthenticationToken("reese", "helloworld",
                         AuthorityUtils.createAuthorityList("ROLE_ADMIN", "ROLE_TEACHER", "ROLE_STUDENT")));
 
+        this.appUserRepository.findAll().forEach(appUser -> log.info("Preloaded " + appUser.getUsername()));
+
         SecurityContextHolder.clearContext();
     }
 }

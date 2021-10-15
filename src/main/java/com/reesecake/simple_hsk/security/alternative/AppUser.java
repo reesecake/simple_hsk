@@ -22,7 +22,7 @@ public class AppUser {
     public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     private @Id @GeneratedValue Long id;
-    private String name;
+    private String username;
     private @JsonIgnore
     String password;
 
@@ -34,9 +34,9 @@ public class AppUser {
 
     protected AppUser() {}
 
-    public AppUser(String name, String password, String... roles) {
+    public AppUser(String username, String password, String... roles) {
 
-        this.name = name;
+        this.username = username;
         this.setPassword(password);
         this.roles = roles;
     }
@@ -47,7 +47,7 @@ public class AppUser {
         if (o == null || getClass() != o.getClass()) return false;
         AppUser appUser = (AppUser) o;
         return Objects.equals(id, appUser.id) &&
-                Objects.equals(name, appUser.name) &&
+                Objects.equals(username, appUser.username) &&
                 Objects.equals(password, appUser.password) &&
                 Arrays.equals(roles, appUser.roles);
     }
@@ -55,7 +55,7 @@ public class AppUser {
     @Override
     public int hashCode() {
 
-        int result = Objects.hash(id, name, password);
+        int result = Objects.hash(id, username, password);
         result = 31 * result + Arrays.hashCode(roles);
         return result;
     }

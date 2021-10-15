@@ -18,7 +18,7 @@ public class UserController {
 
     @GetMapping("/{username}")
     public String userProfile(@PathVariable("username") String username, Model model) {
-        AppUser user = appUserRepository.findUserByName(username);
+        AppUser user = appUserRepository.findUserByUsername(username);
         model.addAttribute("user", user);
 
         return "user-profile";
