@@ -4,6 +4,7 @@ import com.reesecake.simple_hsk.security.alternative.AppUser;
 import com.reesecake.simple_hsk.security.alternative.AppUserRepository;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.rmi.ServerException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @Controller
@@ -34,9 +37,21 @@ public class SecurityController {
     @PostMapping(path = "/register/process",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AppUser> create(@RequestBody JSONObject newUser) {
+    public ResponseEntity<?> create(@RequestBody JSONObject newUser) {
         logger.info( "Processing registration form for: " + newUser );
-        AppUser user = appUserRepository.save(new AppUser(newUser.getAsString("username"), newUser.getAsString("password"), "ROLE_STUDENT"));
+        AppUser user;
+        try {
+            user = appUserRepository.save(new AppUser(newUser.getAsString("username"), newUser.getAsString("password"), "ROLE_STUDENT"));
+        } catch (final DataIntegrityViolationException e) {
+            // https://stackoverflow.com/questions/65862179/check-for-duplicate-usernames-prevents-updating-user
+            // https://stackoverflow.com/questions/40765010/how-to-return-json-with-multiple-properties-by-using-responseentity-in-spring-re
+            // https://stackoverflow.com/questions/56049532/this-email-already-exists-validation
+
+            Map<String, String> msgBody = new HashMap<>();
+            msgBody.put("error", "Already exists");
+
+            return new ResponseEntity<>(msgBody, HttpStatus.CONFLICT);
+        }
 
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }

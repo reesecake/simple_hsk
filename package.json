@@ -10,6 +10,7 @@
     "react"
   ],
   "dependencies": {
+    "@material-ui/lab": "^4.0.0-alpha.60",
     "bootstrap": "^5.1.1",
     "mdbreact": "^5.1.0",
     "react": "^16.5.2",
