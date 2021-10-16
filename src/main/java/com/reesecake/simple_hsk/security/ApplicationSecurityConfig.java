@@ -21,8 +21,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //    private final PasswordEncoder passwordEncoder;
 //    private final ApplicationUserService applicationUserService;
+//    @Autowired
+    private final SpringDataJpaUserDetailsService userDetailsService;
+
     @Autowired
-    private SpringDataJpaUserDetailsService userDetailsService;
+    public ApplicationSecurityConfig(SpringDataJpaUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
 //    @Autowired
 //    public ApplicationSecurityConfig(PasswordEncoder passwordEncoder,
